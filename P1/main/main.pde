@@ -197,16 +197,13 @@ void draw()      // executed at each frame (30 times per second)
               for (int i = 0; i < n; i++) {
                 for (int j = 0; j < n; j++) {
                  drawSQUINTTileTextured(At, Bt, Ct, Dt, i * step_width, j * step_width, step_width, FaceStudent1); 
-          }
-        }
-       }
-         else
-           {
-           noFill(); 
+                }
+              }
+         } else {
+           noFill();
            if(fill) fill(cyan);
            strokeWeight(20); stroke(red,100); // semitransparent
            drawQuad(At,Bt,Ct,Dt);
-           }
          }
       } // end of when 16 points
     } 
