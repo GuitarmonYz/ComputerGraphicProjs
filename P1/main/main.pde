@@ -37,6 +37,8 @@ boolean showLERP=true;
 boolean showLPM=true;
 boolean fill=true;
 boolean filming=false;  // when true frames are captured in FRAMES for a movie
+boolean inputing = false;
+int nConfiged = 0;
 
 // flags used to control when a frame is captured and which picture format is used 
 boolean recordingPDF=false; // most compact and great, but does not always work
@@ -75,6 +77,9 @@ void setup()               // executed once at the begining LatticeImage
 // **** DRAW
 void draw()      // executed at each frame (30 times per second)
   {
+  int n = 0;
+  if(!inputing && nConfiged > 0) n = nConfiged;
+  else  n = 4;
   if(recordingPDF) startRecordingPDF(); // starts recording graphics to make a PDF
   
   if(showInstructions) showHelpScreen(); // display help screen with student's name and picture and project title
@@ -94,34 +99,7 @@ void draw()      // executed at each frame (30 times per second)
    // WHEN USING 4 CONTROL POINTS:  Use this for morphing edges (in 6491)
    if(pointsCount==4)
       {
-      //EDGE E0 = new EDGE(A,B);
-      //EDGE E1 = new EDGE(D,C);
-      
-      //if(showArrows)         // Draw edges as arrows
-      //  {
-      //  stroke(grey); strokeWeight(5); 
-      //  drawEdgeAsArrow(E0); drawEdgeAsArrow(E1); 
-      //  }
-      
-      //if(showLERP)         // Draw lerp of endpoints (as a reference of a bad morph)
-      //  {
-      //  EDGE Et = LERP(E0,time,E1);
-      //  stroke(blue); strokeWeight(3); fill(blue);
-      //  drawEdgeAsArrow(Et);
-      //  writeLabel(Et.PNTnearB()," LERP");
-      //  noFill();
-      //  }
-
-      //if(showLPM)         // Draw LMP: This is a place holder with the wrong solution. 
-      //  {
-      //  EDGE Et = LPM(E0,time,E1); // You must change this code (see TAB edges)
-      //  stroke(red); strokeWeight(3); fill(red);
-      //  drawEdgeAsArrow(Et);
-      //  writeLabel(Et.PNTnearB()," LPM");
-      //  noFill();
-      //  }
       if (texturing) {
-        int n = 4;
         float step_width = 1.0 / n;
         for (int i = 0; i < n; i++) {
           for (int j = 0; j < n; j++) {
@@ -129,7 +107,6 @@ void draw()      // executed at each frame (30 times per second)
           }
         }
       } else {
-        int n = 4;
         float step_width = 1.0 / n;
         for (int i = 0; i <= n; i++) {
           drawSQUINTcurve(A, B, C, D, i * step_width, false);
@@ -168,15 +145,14 @@ void draw()      // executed at each frame (30 times per second)
 
 
      
-    // WHEN USING 16 CONTROL POINTS (press '4' to make them or 'R' to load them from file) 
     if(pointsCount==16)
-      {
-      noFill(); strokeWeight(6); 
-      for(int i=0; i<4; i++) {stroke(50*i,200-50*i,0); drawQuad(Point[i*4],Point[i*4+1],Point[i*4+2],Point[i*4+3]);}
-      strokeWeight(2); stroke(grey,100); for(int i=0; i<4; i++) drawOpenQuad(Point[i],Point[i+4],Point[i+8],Point[i+12]);
- 
- 
-      // Draw control points
+      {      
+      for(int i=0; i<4; i++) {  
+        drawSQUINTcurve(Point[i*4], Point[i*4+1], Point[i*4+2], Point[i*4+3], 0.0, true);
+        drawSQUINTcurve(Point[i*4], Point[i*4+1], Point[i*4+2], Point[i*4+3], 1.0, true);
+        drawSQUINTcurve(Point[i*4], Point[i*4+1], Point[i*4+2], Point[i*4+3], 0.0, false);
+        drawSQUINTcurve(Point[i*4], Point[i*4+1], Point[i*4+2], Point[i*4+3], 1.0, false);
+      }
       if(showLabels) // draw names of control points
         {
         textAlign(CENTER, CENTER); // to position the label around the point
@@ -189,7 +165,6 @@ void draw()      // executed at each frame (30 times per second)
         for(int i=0; i<pointsCount; i++) drawCircle(Point[i],4);
         }
         
-      // Animate quad
       strokeWeight(20); stroke(red,100); // semitransparent
        // *** replace {At,Bt..} by QUAD OBJECT in the code below
        PNT At=P(), Bt=P(), Ct=P(), Dt=P();
@@ -197,8 +172,14 @@ void draw()      // executed at each frame (30 times per second)
          {
          LERPquads(At,Bt,Ct,Dt,Point,time);
          noFill(); noStroke(); 
-         if(texturing) 
-           drawQuadTextured(At,Bt,Ct,Dt,FaceStudent1); // see ``points'' TAB for implementation
+         if(texturing) {
+           float step_width = 1.0 / n;
+            for (int i = 0; i < n; i++) {
+              for (int j = 0; j < n; j++) {
+               drawSQUINTTileTextured(At, Bt, Ct, Dt, i * step_width, j * step_width, step_width, FaceStudent1); 
+              }
+            }
+          }
          else
            {
            noFill(); 
@@ -211,8 +192,14 @@ void draw()      // executed at each frame (30 times per second)
          {
          LPMquads(At,Bt,Ct,Dt,Point,time);
          noFill(); noStroke(); 
-         if(texturing) 
-           drawQuadTextured(At,Bt,Ct,Dt,FaceStudent1); // see ``points'' TAB for implementation
+         if(texturing) {
+           float step_width = 1.0 / n;
+              for (int i = 0; i < n; i++) {
+                for (int j = 0; j < n; j++) {
+                 drawSQUINTTileTextured(At, Bt, Ct, Dt, i * step_width, j * step_width, step_width, FaceStudent1); 
+          }
+        }
+       }
          else
            {
            noFill(); 
@@ -221,16 +208,9 @@ void draw()      // executed at each frame (30 times per second)
            drawQuad(At,Bt,Ct,Dt);
            }
          }
-
       } // end of when 16 points
-     
-        
-      
-    } // end of display frame
-    
-    
-    
-  // snap pictures or movie frames
+    } 
+
   if(recordingPDF) endRecordingPDF();  // end saving a .pdf file with the image of the canvas
   if(snapTIF) snapPictureToTIF();   
   if(snapJPG) snapPictureToJPG();   

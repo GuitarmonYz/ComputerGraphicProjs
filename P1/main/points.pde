@@ -36,13 +36,13 @@ void drawSQUINTcurve(PNT A, PNT B, PNT C, PNT D, float u, boolean virticle)
   strokeWeight(5); 
   if (virticle) {
     stroke(red,100);
-    for (float i = 0; i <= 1; i+=0.02) {
-      vert(SQUINTmap(A, B, C, D, i, u));
+    for (int i = 0; i <= 100; i+=2) {
+      vert(SQUINTmap(A, B, C, D, (float)i/100.0, u)); //<>//
     }
   } else {
     stroke(blue,100);
-    for (float i = 0; i <= 1; i+=0.02) {
-      vert(SQUINTmap(A, B, C, D, u, i));
+    for (int i = 0; i <= 100; i+=2) {
+      vert(SQUINTmap(A, B, C, D, u, (float)i/100.0));
     }
   }
   endShape();
@@ -91,8 +91,8 @@ void makeFourSquares() // arranges 16 control points into 4 neat squares. For CS
   for(int i=0; i<4; i++)
     {
     float d=(float)width/16*(i+2);
-    Point[4*i+0]=P(O); Point[4*i+0].moveBy(-d,-d);  Point[4*i+1]=P(O); Point[4*i+1].moveBy(d,-d); 
-    Point[4*i+2]=P(O); Point[4*i+2].moveBy(d,d);   Point[4*i+3]=P(O); Point[4*i+3].moveBy(-d,d); 
+    Point[4*i+0]=P(O); Point[4*i+0].moveBy(-d+1,-d-1);  Point[4*i+1]=P(O); Point[4*i+1].moveBy(d+3,-d-4); 
+    Point[4*i+2]=P(O); Point[4*i+2].moveBy(d-1,d+1);   Point[4*i+3]=P(O); Point[4*i+3].moveBy(-d-4,d+3); 
     }
   }
 

@@ -16,16 +16,16 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
     if(key=='+') ;
 
     if(key=='`') filming=!filming;  // filming on/off capture frames into folder IMAGES/MOVIE_FRAMES_TIF/
-    if(key=='1') method=1;                  
-    if(key=='2') method=2;
-    if(key=='3') ;
-    if(key=='4') makeFourSquares();
-    if(key=='5') ;
-    if(key=='6') ;
-    if(key=='7') ; 
-    if(key=='8') ;
-    if(key=='9') ;
-    if(key=='0') method=0;
+    if(key=='1') {method=1; if(inputing) {nConfiged*=10; nConfiged+=1;}}                  
+    if(key=='2') {method=2; if(inputing) {nConfiged*=10; nConfiged+=2;}}
+    if(key=='3') if(inputing) {nConfiged*=10; nConfiged+=3;}
+    if(key=='4') {makeFourSquares(); if(inputing) {nConfiged*=10; nConfiged+=4;}}
+    if(key=='5') if(inputing) {nConfiged*=10; nConfiged+=5;}
+    if(key=='6') if(inputing) {nConfiged*=10; nConfiged+=6;}
+    if(key=='7') if(inputing) {nConfiged*=10; nConfiged+=7;}
+    if(key=='8') if(inputing) {nConfiged*=10; nConfiged+=8;}
+    if(key=='9') if(inputing) {nConfiged*=10; nConfiged+=9;}
+    if(key=='0') {method=0; if(inputing) {nConfiged*=10;}}
     if(key=='-') {A=Point[0]; B=Point[1]; C=Point[2]; D=Point[3];}
     if(key=='=') ;
 
@@ -42,7 +42,7 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
     if(key=='k') ; 
     if(key=='l') showLERP=!showLERP;
     if(key=='m') ;
-    if(key=='n') ;
+    if(key=='n') {inputing = !inputing; if(inputing) nConfiged = 0;}
     if(key=='o') ;  
     if(key=='p') ;
     if(key=='q') ; 
