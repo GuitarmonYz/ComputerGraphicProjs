@@ -182,10 +182,14 @@ void draw()      // executed at each frame (30 times per second)
           }
          else
            {
-           noFill(); 
-           if(fill) fill(yellow);
-           strokeWeight(20); stroke(red,100); // semitransparent
-           drawQuad(At,Bt,Ct,Dt);
+           float step_width = 1.0 / n;
+            for (int i = 0; i <= n; i++) {
+              drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, false);
+              drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, true);
+              for (int j = 0; j <= n; j++) {
+              drawCircle(SQUINTmap(At, Bt, Ct, Dt, i * step_width, j * step_width), 2);
+            }
+        }
            }
          }
        if(showLPM) 
@@ -202,10 +206,14 @@ void draw()      // executed at each frame (30 times per second)
        }
          else
            {
-           noFill(); 
-           if(fill) fill(cyan);
-           strokeWeight(20); stroke(red,100); // semitransparent
-           drawQuad(At,Bt,Ct,Dt);
+           float step_width = 1.0 / n;
+        for (int i = 0; i <= n; i++) {
+          drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, false);
+          drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, true);
+          for (int j = 0; j <= n; j++) {
+            drawCircle(SQUINTmap(At, Bt, Ct, Dt, i * step_width, j * step_width), 2);
+          }
+        }
            }
          }
       } // end of when 16 points
