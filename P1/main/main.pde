@@ -217,7 +217,7 @@ void draw()      // executed at each frame (30 times per second)
         // LPMquads(At,Bt,Ct,Dt,Point,time);
         PNT[] centroids = getCentroid(Point);
         PNT[] primes = getPrimes(Point, centroids);
-        NevillQuads(At, Bt, Ct, Dt, Point, centroids, primes, time)
+        NevillQuads(At, Bt, Ct, Dt, Point, centroids, primes, time);
         noFill(); noStroke(); 
         if(texturing) {
           float step_width = 1.0 / n;
