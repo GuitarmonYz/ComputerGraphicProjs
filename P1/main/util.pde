@@ -28,7 +28,7 @@ PNT[] getCentroid(PNT[] points) {
 PNT[] getPrimes(PNT[] points, PNT[] centroid) {
   PNT[] primes = new PNT[16];
   for(int i = 0; i < 4; i++) {
-    VCT move = V(centroid[i+1], centroid[i]);
+    //VCT move = V(centroid[i+1], centroid[i]);
     float scale = sqrt(normOf(V(points[(i+1)*4], points[(i+1)*4+2])) * normOf(V(points[(i+1)*4+1], points[(i+1)*4+3]))) / sqrt(normOf(V(points[i*4], points[i*4+2])) * normOf(V(points[i*4+1], points[i*4+3])));
     // rotate is in rad
     float rotate = angle(V(centroid[i+1], points[(i+1)*4]), V(centroid[i], points[i*4])) + angle(V(centroid[i+1], points[(i+1)*4 + 1]), V(centroid[i], points[i*4 + 1])) + 
@@ -41,6 +41,6 @@ PNT[] getPrimes(PNT[] points, PNT[] centroid) {
       Vnew = Scaled(scale, Vnew);
       primes[(i + 1) * 4 + j] = P(centroid[i+1], Vnew);
     }
-    
   }
+  return primes;
 }
