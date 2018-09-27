@@ -57,7 +57,6 @@ PNT A, B, C, D; // Convenient global references to the first 4 control points
 PNT P; // reference to the point last picked by mouse-click
 
 
-
 // **** SETUP *******
 void setup()               // executed once at the begining LatticeImage
   {
@@ -97,8 +96,7 @@ void draw()      // executed at each frame (30 times per second)
       }
     
    // Implemented by Zhao Yan
-   if(pointsCount==4)
-      {
+   if(pointsCount==4) {
       if (texturing) {
         float step_width = 1.0 / n;
         for (int i = 0; i < n; i++) {
@@ -140,46 +138,39 @@ void draw()      // executed at each frame (30 times per second)
         }
       noFill(); 
       
-      } // end of when 4 points
-      
-
-
-     
-    if(pointsCount==16)
-      {    
+    } // end of when 4 points
+    
+    if(pointsCount==16) {    
+        // if(showLabels) // draw names of control points
+        // {
+        // textAlign(CENTER, CENTER); // to position the label around the point
+        // stroke(black); strokeWeight(1); // attribute of circle around the label
+        // for(int i=0; i<pointsCount; i++) showLabelInCircle(Point[i],Character.toString((char)(int)(i+65)));
+        // }
+        // else // draw small dots at control points
+        // {
+        // fill(blue); stroke(blue); strokeWeight(2);  
+        // for(int i=0; i<pointsCount; i++) drawCircle(Point[i],4);
+        // }
         
-        if(showLabels) // draw names of control points
-        {
-        textAlign(CENTER, CENTER); // to position the label around the point
-        stroke(black); strokeWeight(1); // attribute of circle around the label
-        for(int i=0; i<pointsCount; i++) showLabelInCircle(Point[i],Character.toString((char)(int)(i+65)));
-        }
-        else // draw small dots at control points
-        {
-        fill(blue); stroke(blue); strokeWeight(2);  
-        for(int i=0; i<pointsCount; i++) drawCircle(Point[i],4);
-        }
+        // for(int i=0; i<4; i++) {
+        //   drawNevilleCurve(0, Point[0+i], 0.333, Point[4+i], 0.666, Point[8+i], 1, Point[12+i]);
+        // }
+        // for(int i=0; i<4;i++) {
+        //   drawEdge(Point[i*4], Point[i*4+1]);
+        //   drawEdge(Point[i*4+1], Point[i*4+2]);
+        //   drawEdge(Point[i*4+2], Point[i*4+3]);
+        //   drawEdge(Point[i*4+3], Point[i*4]);
+        // }
         
-        for(int i=0; i<4; i++) {
-          drawNevilleCurve(0, Point[0+i], 0.333, Point[4+i], 0.666, Point[8+i], 1, Point[12+i]);
-        }
-        for(int i=0; i<4;i++) {
-          drawEdge(Point[i*4], Point[i*4+1]);
-          drawEdge(Point[i*4+1], Point[i*4+2]);
-          drawEdge(Point[i*4+2], Point[i*4+3]);
-          drawEdge(Point[i*4+3], Point[i*4]);
-        }
-        
-        strokeWeight(20); stroke(red,100); // semitransparent
+        // strokeWeight(20); stroke(red,100); // semitransparent
        // *** replace {At,Bt..} by QUAD OBJECT in the code below
-       PNT At=P(), Bt=P(), Ct=P(), Dt=P();
-       NevillQuads(At,Bt,Ct,Dt,Point,time); 
+      //  PNT At=P(), Bt=P(), Ct=P(), Dt=P();
+      //  NevillQuads(At,Bt,Ct,Dt,Point,time); 
          
-       drawQuad(At, Bt, Ct, Dt);
+      //  drawQuad(At, Bt, Ct, Dt);
        
       ////////////////////////////////////////////////////////////////
-      /*  
-        
       for(int i=0; i<4; i++) {  
         drawSQUINTcurve(Point[i*4], Point[i*4+1], Point[i*4+2], Point[i*4+3], 0.0, true);
         drawSQUINTcurve(Point[i*4], Point[i*4+1], Point[i*4+2], Point[i*4+3], 1.0, true);
@@ -187,72 +178,67 @@ void draw()      // executed at each frame (30 times per second)
         drawSQUINTcurve(Point[i*4], Point[i*4+1], Point[i*4+2], Point[i*4+3], 1.0, false);
       }
       if(showLabels) // draw names of control points
-        {
+      {
         textAlign(CENTER, CENTER); // to position the label around the point
         stroke(black); strokeWeight(1); // attribute of circle around the label
         for(int i=0; i<pointsCount; i++) showLabelInCircle(Point[i],Character.toString((char)(int)(i+65)));
-        }
+      }
       else // draw small dots at control points
-        {
+      {
         fill(blue); stroke(blue); strokeWeight(2);  
         for(int i=0; i<pointsCount; i++) drawCircle(Point[i],4);
-        }
-        
+      }
       strokeWeight(20); stroke(red,100); // semitransparent
-       
-       //Implemented by CongDu
-       PNT At=P(), Bt=P(), Ct=P(), Dt=P();
-       if(showLERP) 
-         {
-         LERPquads(At,Bt,Ct,Dt,Point,time);
-         noFill(); noStroke(); 
-         if(texturing) {
-           float step_width = 1.0 / n;
-            for (int i = 0; i < n; i++) {
-              for (int j = 0; j < n; j++) {
-               drawSQUINTTileTextured(At, Bt, Ct, Dt, i * step_width, j * step_width, step_width, FaceStudent1); 
-              }
+      
+      //Implemented by CongDu
+      PNT At=P(), Bt=P(), Ct=P(), Dt=P();
+      if(showLERP) {
+        LERPquads(At,Bt,Ct,Dt,Point,time);
+        noFill(); noStroke(); 
+        if(texturing) {
+          float step_width = 1.0 / n;
+          for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+              drawSQUINTTileTextured(At, Bt, Ct, Dt, i * step_width, j * step_width, step_width, FaceStudent1); 
             }
           }
-         else
-           {
-           float step_width = 1.0 / n;
-            for (int i = 0; i <= n; i++) {
-              drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, false);
-              drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, true);
-              for (int j = 0; j <= n; j++) {
+        } else {
+          float step_width = 1.0 / n;
+          for (int i = 0; i <= n; i++) {
+            drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, false);
+            drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, true);
+            for (int j = 0; j <= n; j++) {
               drawCircle(SQUINTmap(At, Bt, Ct, Dt, i * step_width, j * step_width), 2);
             }
-        }
-           }
-         }
-       if(showLPM) 
-         {
-         LPMquads(At,Bt,Ct,Dt,Point,time);
-         noFill(); noStroke(); 
-         if(texturing) {
-           float step_width = 1.0 / n;
-              for (int i = 0; i < n; i++) {
-                for (int j = 0; j < n; j++) {
-                 drawSQUINTTileTextured(At, Bt, Ct, Dt, i * step_width, j * step_width, step_width, FaceStudent1); 
           }
         }
-       }
-         else
-           {
-           float step_width = 1.0 / n;
-        for (int i = 0; i <= n; i++) {
-          drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, false);
-          drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, true);
-          for (int j = 0; j <= n; j++) {
-            drawCircle(SQUINTmap(At, Bt, Ct, Dt, i * step_width, j * step_width), 2);
+      }
+      if(showLPM) {
+        // LPMquads(At,Bt,Ct,Dt,Point,time);
+        PNT[] centroids = getCentroid(Point);
+        NevillQuads(At, Bt, Ct, Dt, Point, centroids, Primes, time)
+        noFill(); noStroke(); 
+        if(texturing) {
+          float step_width = 1.0 / n;
+            for (int i = 0; i < n; i++) {
+              for (int j = 0; j < n; j++) {
+                drawSQUINTTileTextured(At, Bt, Ct, Dt, i * step_width, j * step_width, step_width, FaceStudent1); 
+              }
+            }
+        }
+        else {
+          float step_width = 1.0 / n;
+          for (int i = 0; i <= n; i++) {
+            drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, false);
+            drawSQUINTcurve(At, Bt, Ct, Dt, i * step_width, true);
+            for (int j = 0; j <= n; j++) {
+              drawCircle(SQUINTmap(At, Bt, Ct, Dt, i * step_width, j * step_width), 2);
+            }
           }
         }
-           }
-         }
-         */
-      } // end of when 16 points
-    } 
+      }
+    } // end of when 16 points
+  } 
 
   if(recordingPDF) endRecordingPDF();  // end saving a .pdf file with the image of the canvas
   if(snapTIF) snapPictureToTIF();   
