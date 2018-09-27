@@ -15,6 +15,7 @@ PNT[] getCentroid(PNT[] points) {
             centroids_Tri[j].x = (points[(i*4+j)%4].x + points[(i*4+1+j)%4].x + points[(i*4+2+j)%4].x)/3.0;
             centroids_Tri[j].y = (points[(i*4+j)%4].y + points[(i*4+1+j)%4].y + points[(i*4+2+j)%4].y)/3.0;
         }
+        
         float m1 = getGradient(centroids_Tri[0], centroids_Tri[2]);
         float m2 = getGradient(centroids_Tri[1], centroids_Tri[3]);
         float b1 = calculateYAxisIntersect(centroids_Tri[0], m1);
@@ -27,7 +28,7 @@ PNT[] getCentroid(PNT[] points) {
 
 PNT[] getPrimes(PNT[] points, PNT[] centroid) {
   PNT[] primes = new PNT[16];
-  for(int i = 0; i < 4; i++) {
+  for(int i = 0; i < 3; i++) {
     //VCT move = V(centroid[i+1], centroid[i]);
     float scale = sqrt(normOf(V(points[(i+1)*4], points[(i+1)*4+2])) * normOf(V(points[(i+1)*4+1], points[(i+1)*4+3]))) / sqrt(normOf(V(points[i*4], points[i*4+2])) * normOf(V(points[i*4+1], points[i*4+3])));
     // rotate is in rad
@@ -35,7 +36,7 @@ PNT[] getPrimes(PNT[] points, PNT[] centroid) {
     angle(V(centroid[i+1], points[(i+1)*4 + 2]), V(centroid[i], points[i * 4 + 2])) + angle(V(centroid[i+1], points[(i + 1) * 4 + 3]), V(centroid[i], points[i * 4 + 3]));
     rotate = rotate/4;
     
-    for(int j = 0; i < 4; j++) {
+    for(int j = 0; j < 4; j++) {
       VCT Vnew = V(points[i * 4 + j], centroid[i]);
       Vnew = Rotated(Vnew, rotate);
       Vnew = Scaled(scale, Vnew);
