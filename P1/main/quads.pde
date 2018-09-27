@@ -12,13 +12,39 @@ void  LERPquads(PNT A, PNT B, PNT C, PNT D, PNT[] Point, float time)
 }
 
 // implemented by Cong Du
-void NevillQuads(PNT A, PNT B, PNT C, PNT D, PNT[] point, float time)
+void NevillQuads(PNT A, PNT B, PNT C, PNT D, PNT[] point, PNT[] centroid, PNT[] primes, float time)
 {
-  A.setTo(Neville(0, point[0], 0.33, point[4], 0.66, point[8], 1.0, point[12], time));
-  B.setTo(Neville(0, point[1], 0.33, point[5], 0.66, point[9], 1.0, point[13], time));
-  C.setTo(Neville(0, point[2], 0.33, point[6], 0.66, point[10], 1.0, point[14], time));
-  D.setTo(Neville(0, point[3], 0.33, point[7], 0.66, point[11], 1.0, point[15], time));
+  int i = floor(time / (1.0/3.0)) + 1;
+  i = (i > 3) ? 3 : i;
+  
+  float scaled_time = (time - (i - 1) * 1.0 / 3.0) * 3;
+  
+  // compute current centroid
+  PNT centroidt = Neville(0, centroid[0], 0.333, centroid[1], 0.6666, centroid[2], 1.0, centroid[3], time);
+  
+  VCT at = (LPM(V(point[(i - 1) * 4], centroid[i - 1]), scaled_time ,V(point[i * 4], centroid[i])));
+  VCT residual_a_t = V(point[(i - 1) * 4], point[i*4]);
+  residual_a_t = Scaled(scaled_time, residual_a_t);
+  A.setTo(P(P(centroidt, at), residual_a_t));
+  
+  VCT bt = (LPM(V(point[(i - 1) * 4 + 1], centroid[i - 1]), scaled_time ,V(point[i * 4 + 1], centroid[i])));
+  VCT residual_b_t = V(point[(i - 1) * 4 + 1], point[i * 4 + 1]);
+  residual_b_t = Scaled(scaled_time, residual_b_t);
+  B.setTo(P(P(centroidt, bt), residual_b_t));
+  VCT ct = (LPM(V(point[(i - 1) * 4 + 2], centroid[i - 1]), scaled_time ,V(point[i * 4 + 2], centroid[i])));
+  VCT residual_c_t = V(point[(i - 1) * 4 + 2], point[i * 4 + 2]);
+  residual_c_t = Scaled(scaled_time, residual_c_t);
+  C.setTo(P(P(centroidt, ct), residual_c_t));
+  VCT dt = (LPM(V(point[(i - 1) * 4 + 3], centroid[i - 1]), scaled_time ,V(point[i * 4 + 3], centroid[i])));
+  VCT residual_d_t = V(point[(i - 1) * 4 + 3], point[i*4 + 3]);
+  residual_d_t = Scaled(scaled_time, residual_d_t);
+  D.setTo(P(P(centroidt, dt), residual_d_t));
+  
 }
+
+// compute intermediate position between two pair of 
+void NevillQuadsHelper(PNT At, PNT Bt, PNT Ct, PNT Dt, PNT  int start, float time)
+
 
 //implemented by Cong Du
 void LPMquads(PNT A, PNT B, PNT C, PNT D, PNT[] Point, float time)
