@@ -30,6 +30,7 @@ void drawOpenQuad(PNT A, PNT B, PNT C, PNT D)  {beginShape();  vert(A); vert(B);
 void vert(PNT P) {vertex(P.x,P.y);};  // use between beginShape and endShape to display polylines   
 void writeLabel(PNT P, String S) {text(S, P.x-1.,P.y-2.5); }       // writes string S near P
 
+//Implemented by Zhao Yan & Cong Du
 void drawSQUINTcurve(PNT A, PNT B, PNT C, PNT D, float u, boolean virticle)
 {
   beginShape();
@@ -57,7 +58,7 @@ void drawQuadTextured(PNT A, PNT B, PNT C, PNT D, PImage pix)  // render quad A,
    vert(A,0,0); vert(B,1,0); vert(C,1,1); vert(D,0,1); 
   endShape(CLOSE);
   }  
-
+// Implemented by Zhao Yan
 void drawSQUINTTileTextured(PNT A, PNT B, PNT C, PNT D, float u, float v, float step_width, PImage pix)
 {
   beginShape();
