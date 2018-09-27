@@ -19,8 +19,8 @@ PNT[] getCentroid(PNT[] points) {
         float m2 = getGradient(centroids_Tri[1], centroids_Tri[3]);
         float b1 = calculateYAxisIntersect(centroids_Tri[0], m1);
         float b2 = calculateYAxisIntersect(centroids_Tri[1], m2);
-        centroids_quad[i].x = (b2 - b1) / float(m1 - m2);
-        centroids_quad[i].y = (m1 * x) + b1;
+        centroids_quad[i].x = (b2 - b1) / (m1 - m2);
+        centroids_quad[i].y = (m1 * centroids_quad[i].x) + b1;
     }
     return centroids_quad;    
 }

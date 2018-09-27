@@ -44,9 +44,6 @@ void NevillQuads(PNT A, PNT B, PNT C, PNT D, PNT[] point, PNT[] centroid, PNT[] 
   
 }
 
-// compute intermediate position between two pair of 
-void NevillQuadsHelper(PNT At, PNT Bt, PNT Ct, PNT Dt, PNT  int start, float time)
-
 
 //implemented by Cong Du
 void LPMquads(PNT A, PNT B, PNT C, PNT D, PNT[] Point, float time)
