@@ -26,7 +26,6 @@ PNT[] getCentroid(PNT[] points) {
 }
 
 PNT[] getPrimes(PNT[] points, PNT[] centroid) {
-  println("get here");
   PNT[] primes = new PNT[16];
   for(int i = 0; i < 3; i++) {
     //VCT move = V(centroid[i+1], centroid[i]);
@@ -40,9 +39,11 @@ PNT[] getPrimes(PNT[] points, PNT[] centroid) {
       VCT Vnew = V(points[i * 4 + j], centroid[i]);
       Vnew = Rotated(Vnew, rotate);
       Vnew = Scaled(scale, Vnew);
-      primes[(i + 1) * 4 + j] = P(centroid[i+1], Vnew);
+      primes[(i + 1) * 4 + j] = P(centroid[i + 1], Vnew);
     }
   }
-  println("get end");
+  for(int i = 4; i <16; i++) {
+    println(primes[i].x - points[i].x);
+  }
   return primes;
 }
