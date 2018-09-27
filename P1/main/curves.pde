@@ -2,24 +2,25 @@
 PNT Neville(float a, PNT A, float b, PNT B, float t) 
   {
   //**UG** ADD YOUR CODE HERE INSTEAD OF LINE BELOW
-  return LERP(A,t,B);  // INCORRET SOLUTION PROVIDED AS PLACEHOLDER
+  return LERP(A,(t-a)/(b-a),B);  // INCORRET SOLUTION PROVIDED AS PLACEHOLDER
   }
   
 PNT Neville(float a, PNT A, float b, PNT B, float c, PNT C, float t) 
   {
     //**UG** ADD YOUR CODE HERE INSTEAD OF LINE BELOW
-  return  Neville(a,A,c,C,t);  // INCORRET SOLUTION PROVIDED AS PLACEHOLDER
+  return  LERP(Neville(a,A,b,B,t), (t-a)/(c-a), Neville(b,B,c,C,t));  // INCORRET SOLUTION PROVIDED AS PLACEHOLDER
   }
   
 PNT Neville(float a, PNT A, float b, PNT B, float c, PNT C, float d, PNT D, float t) 
   {
   //**UG** ADD YOUR CODE HERE INSTEAD OF LINE BELOW
-  return Neville(a,A,d,D,t);  // INCORRET SOLUTION PROVIDED AS PLACEHOLDER
+  return LERP(Neville(a,A,b,B,c,C,t), (t-a)/(d-a), Neville(b,B,c,C,d,D,t));  // INCORRET SOLUTION PROVIDED AS PLACEHOLDER
   }
 
 void drawNevilleCurve(float a, PNT A, float b, PNT B, float c, PNT C, float d, PNT D)
     {
     float du=1./90;
+    noFill();
     beginShape(); 
       for(float u=0; u<=1.+du/2; u+=du) 
         vert(Neville(a,A,b,B,c,C,d,D,u)); // does not work yet (you must write that Neville function (in Tab points) )
