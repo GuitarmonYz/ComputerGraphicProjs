@@ -24,3 +24,5 @@ PNT[] getCentroid(PNT[] points) {
     }
     return centroids_quad;    
 }
+
+PNT[]
