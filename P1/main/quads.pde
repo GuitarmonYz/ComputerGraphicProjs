@@ -10,6 +10,16 @@ void  LERPquads(PNT A, PNT B, PNT C, PNT D, PNT[] Point, float time)
   C.setTo(LERP(Point[(i - 1) * 4 + 2], scaled_time, Point[i * 4 + 2]));
   D.setTo(LERP(Point[(i - 1) * 4 + 3], scaled_time, Point[i * 4 + 3]));
 }
+
+// implemented by Cong Du
+void NevillQuads(PNT A, PNT B, PNT C, PNT D, PNT[] point, float time)
+{
+  A.setTo(Neville(0, point[0], 0.33, point[4], 0.66, point[8], 1.0, point[12], time));
+  B.setTo(Neville(0, point[1], 0.33, point[5], 0.66, point[9], 1.0, point[13], time));
+  C.setTo(Neville(0, point[2], 0.33, point[6], 0.66, point[10], 1.0, point[14], time));
+  D.setTo(Neville(0, point[3], 0.33, point[7], 0.66, point[11], 1.0, point[15], time));
+}
+
 //implemented by Cong Du
 void LPMquads(PNT A, PNT B, PNT C, PNT D, PNT[] Point, float time)
 {

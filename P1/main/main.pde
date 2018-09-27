@@ -146,7 +146,40 @@ void draw()      // executed at each frame (30 times per second)
 
      
     if(pointsCount==16)
-      {      
+      {    
+        
+        if(showLabels) // draw names of control points
+        {
+        textAlign(CENTER, CENTER); // to position the label around the point
+        stroke(black); strokeWeight(1); // attribute of circle around the label
+        for(int i=0; i<pointsCount; i++) showLabelInCircle(Point[i],Character.toString((char)(int)(i+65)));
+        }
+        else // draw small dots at control points
+        {
+        fill(blue); stroke(blue); strokeWeight(2);  
+        for(int i=0; i<pointsCount; i++) drawCircle(Point[i],4);
+        }
+        
+        for(int i=0; i<4; i++) {
+          drawNevilleCurve(0, Point[0+i], 0.333, Point[4+i], 0.666, Point[8+i], 1, Point[12+i]);
+        }
+        for(int i=0; i<4;i++) {
+          drawEdge(Point[i*4], Point[i*4+1]);
+          drawEdge(Point[i*4+1], Point[i*4+2]);
+          drawEdge(Point[i*4+2], Point[i*4+3]);
+          drawEdge(Point[i*4+3], Point[i*4]);
+        }
+        
+        strokeWeight(20); stroke(red,100); // semitransparent
+       // *** replace {At,Bt..} by QUAD OBJECT in the code below
+       PNT At=P(), Bt=P(), Ct=P(), Dt=P();
+       NevillQuads(At,Bt,Ct,Dt,Point,time); 
+         
+       drawQuad(At, Bt, Ct, Dt);
+       
+        
+      /*  
+        
       for(int i=0; i<4; i++) {  
         drawSQUINTcurve(Point[i*4], Point[i*4+1], Point[i*4+2], Point[i*4+3], 0.0, true);
         drawSQUINTcurve(Point[i*4], Point[i*4+1], Point[i*4+2], Point[i*4+3], 1.0, true);
@@ -216,6 +249,7 @@ void draw()      // executed at each frame (30 times per second)
         }
            }
          }
+         */
       } // end of when 16 points
     } 
 
