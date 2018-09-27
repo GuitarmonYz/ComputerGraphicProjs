@@ -96,7 +96,7 @@ void draw()      // executed at each frame (30 times per second)
       else  time=0; // reset time to the beginning
       }
     
-   // WHEN USING 4 CONTROL POINTS:  Use this for morphing edges (in 6491)
+   // Implemented by Zhao Yan
    if(pointsCount==4)
       {
       if (texturing) {
@@ -166,7 +166,8 @@ void draw()      // executed at each frame (30 times per second)
         }
         
       strokeWeight(20); stroke(red,100); // semitransparent
-       // *** replace {At,Bt..} by QUAD OBJECT in the code below
+       
+       //Implemented by CongDu
        PNT At=P(), Bt=P(), Ct=P(), Dt=P();
        if(showLERP) 
          {

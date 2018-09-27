@@ -35,7 +35,7 @@ void LPMquads(PNT A, PNT B, PNT C, PNT D, PNT[] Point, float time)
     C.setTo(P((Ct_1.x + Ct_2.x)/2.0, (Ct_1.y + Ct_2.y)/2.0));
     D.setTo(P((Dt_1.x + Dt_2.x)/2.0, (Dt_1.y + Dt_2.y)/2.0));
 }
-
+// Implemented by Zhao Yan
 PNT SQUINTmap(PNT A, PNT B, PNT C, PNT D, float u, float v)
 {
   SIMILARITY s_u = new SIMILARITY(A, D, B, C);

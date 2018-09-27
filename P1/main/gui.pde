@@ -14,7 +14,7 @@ void keyPressed()  // executed each time a key is pressed: sets the Boolean "key
     if(key==')') ;  
     if(key=='_') ;
     if(key=='+') ;
-
+    // implemented by Cong DU
     if(key=='`') filming=!filming;  // filming on/off capture frames into folder IMAGES/MOVIE_FRAMES_TIF/
     if(key=='1') {method=1; if(inputing) {nConfiged*=10; nConfiged+=1;}}                  
     if(key=='2') {method=2; if(inputing) {nConfiged*=10; nConfiged+=2;}}
