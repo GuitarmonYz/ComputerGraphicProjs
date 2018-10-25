@@ -21,9 +21,9 @@ void keyPressed()
   if(key=='}') {showPath=!showPath;}
   if(key=='|') {showCorrectedKeys=!showCorrectedKeys;}
   if(key=='=') {showTube=!showTube;}
-  if(key=='3') {P.resetOnCircle(3,300); Q.copyFrom(P);}
-  if(key=='4') {P.resetOnCircle(4,400); Q.copyFrom(P);}
-  if(key=='5') {P.resetOnCircle(5,500); Q.copyFrom(P);}
+  //if(key=='3') {P.resetOnCircle(3,300); Q.copyFrom(P);}
+  //if(key=='4') {P.resetOnCircle(4,400); Q.copyFrom(P);}
+  //if(key=='5') {P.resetOnCircle(5,500); Q.copyFrom(P);}
   if(key=='^') track=!track;
   if(key=='q') Q.copyFrom(P);
   if(key=='p') P.copyFrom(Q);
@@ -42,9 +42,9 @@ void keyPressed()
   if(key=='#') exit();
   if(key=='=') {}
   
-  if(key=='e') {showEditorDemo=!showEditorDemo; showTorus=false; showBiarc = false; F.setTo(OriginalO);}
-  if(key=='d') {showTorus=!showTorus; showEditorDemo=false; showBiarc = false; F.setTo(Origin);}
-  if(key=='b') {showBiarc=!showBiarc; showEditorDemo=false; showTorus = false; F.setTo(Origin);}
+  if(key=='1') {showEditorDemo=!showEditorDemo; showTorus=false; showBiarc = false; F.setTo(OriginalO);}
+  if(key=='2') {showTorus=!showTorus; showEditorDemo=false; showBiarc = false; F.setTo(Origin);}
+  if(key=='3') {showBiarc=!showBiarc; showEditorDemo=false; showTorus = false; F.setTo(Origin);}
   
   if(key=='+') {TorusDemo.changeRopeQuantity(true);}
   if(key=='-') {TorusDemo.changeRopeQuantity(false);}
@@ -64,7 +64,7 @@ void mousePressed()
    {
     if (!keyPressed) picking=true;
     if (!keyPressed) {P.set_pv_to_pp(); println("picked vertex "+P.pp);}
-    if(keyPressed && key=='a') {P.addPt(Of);}
+    if (keyPressed && key=='a') {P.addPt(Of);}
   //  if(keyPressed && (key=='f' || key=='s' || key=='b' || key=='c')) {P.addPt(Of,key);}
   
    // if (!keyPressed) P.setPicked();
