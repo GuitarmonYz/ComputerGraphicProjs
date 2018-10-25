@@ -114,15 +114,6 @@ void draw()      // executed at each frame (30 times per second)
           }
         }
       }
-      
-      //int color_idx = 0;
-      //for (float u = 0; u <= n; u+=step_width) {
-      //  for (float v = 0; v <= n; v+=step_width) {
-      //    fill(color_array[color_idx % 9]); stroke(color_idx % 9);
-      //    color_idx++;
-      //    drawCircle(SQUINTmap(A, B, C, D, u, v), 2);
-      //  }
-      //}
           
       // Draw and label control points
       if(showLabels) // draw names of control points
@@ -140,36 +131,7 @@ void draw()      // executed at each frame (30 times per second)
       
     } // end of when 4 points
     
-    if(pointsCount==16) {    
-        // if(showLabels) // draw names of control points
-        // {
-        // textAlign(CENTER, CENTER); // to position the label around the point
-        // stroke(black); strokeWeight(1); // attribute of circle around the label
-        // for(int i=0; i<pointsCount; i++) showLabelInCircle(Point[i],Character.toString((char)(int)(i+65)));
-        // }
-        // else // draw small dots at control points
-        // {
-        // fill(blue); stroke(blue); strokeWeight(2);  
-        // for(int i=0; i<pointsCount; i++) drawCircle(Point[i],4);
-        // }
-        
-        // for(int i=0; i<4; i++) {
-        //   drawNevilleCurve(0, Point[0+i], 0.333, Point[4+i], 0.666, Point[8+i], 1, Point[12+i]);
-        // }
-        // for(int i=0; i<4;i++) {
-        //   drawEdge(Point[i*4], Point[i*4+1]);
-        //   drawEdge(Point[i*4+1], Point[i*4+2]);
-        //   drawEdge(Point[i*4+2], Point[i*4+3]);
-        //   drawEdge(Point[i*4+3], Point[i*4]);
-        // }
-        
-        // strokeWeight(20); stroke(red,100); // semitransparent
-       // *** replace {At,Bt..} by QUAD OBJECT in the code below
-      //  PNT At=P(), Bt=P(), Ct=P(), Dt=P();
-      //  NevillQuads(At,Bt,Ct,Dt,Point,time); 
-         
-      //  drawQuad(At, Bt, Ct, Dt);
-       
+    if(pointsCount==16) {   
       ////////////////////////////////////////////////////////////////
       for(int i=0; i<4; i++) {  
         drawSQUINTcurve(Point[i*4], Point[i*4+1], Point[i*4+2], Point[i*4+3], 0.0, true);

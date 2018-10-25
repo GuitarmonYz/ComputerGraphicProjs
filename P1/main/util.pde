@@ -2,9 +2,11 @@
 float getGradient(PNT p1, PNT p2) {
     return (p1.y - p2.y) / (p1.x - p2.x);
 }
+//get intersection with y axis
 float calculateYAxisIntersect(PNT p, float m) {
     return  p.y - (m * p.x);
 }
+//implememted by Zhao Yan
 PNT[] getCentroid(PNT[] points) {
     PNT[] centroids_quad = new PNT[4];
     for (int i = 0; i < 4; i++) {
@@ -25,9 +27,8 @@ PNT[] getCentroid(PNT[] points) {
     }
     return centroids_quad;    
 }
-
+//implemented by Cong Du
 PNT[] getPrimes(PNT[] points, PNT[] centroid) {
-  println("get here");
   PNT[] primes = new PNT[16];
   for(int i = 0; i < 3; i++) {
     //VCT move = V(centroid[i+1], centroid[i]);
@@ -44,6 +45,5 @@ PNT[] getPrimes(PNT[] points, PNT[] centroid) {
       primes[(i + 1) * 4 + j] = P(centroid[i+1], Vnew);
     }
   }
-  println("get end");
   return primes;
 }
