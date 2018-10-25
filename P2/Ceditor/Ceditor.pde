@@ -1,4 +1,4 @@
-//  ******************* Basecode for P2 ***********************
+  //  ******************* Basecode for P2 ***********************
 Boolean 
   animating=true, 
   PickedFocus=false, 
@@ -18,9 +18,11 @@ Boolean
   showVecs=true,
   showTube=false,
   
-  showTorus = true,
-  showEditorDemo = false,
+  showTorus = false,
+  showEditorDemo = true,
   showBiarc = false;
+
+//CEditor Demo
 float 
   t=0, 
   s=0;
@@ -28,6 +30,9 @@ int
   f=0, maxf=2*30, level=4, method=5;
 String SDA = "angle";
 float defectAngle=0;
+pt OriginalO = P(100,100,0);
+pts Pdata = new pts();
+pts Qdata = new pts();
 pts P = new pts(); // polyloop in 3D
 pts Q = new pts(); // second polyloop in 3D
 pts R = new pts(); // inbetweening polyloop L(P,t,Q);
@@ -37,6 +42,7 @@ pt Origin = new pt(0,0,300);
 vec XAxis = new vec(1,0,0);
 torus TorusDemo = new torus();
 vec TorusDemo_GOV = new vec(50, 0, 0);
+
 //biarc demo
 pt[] biarcPoints = new pt[4];
 biarc Biarc;
@@ -47,17 +53,22 @@ void setup() {
   myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
   textureMode(NORMAL);          
   size(1000, 1000, P3D); // P3D means that we will do 3D graphics
-
-  TorusDemo = new torus(Origin, XAxis, new vec(0,0,200), TorusDemo_GOV, 0.4, 40, 100, 4);
   
+  //CEditorDemo Setup
+  Pdata.declare(); Qdata.declare();
+  Pdata.loadPts("data/pts");  Qdata.loadPts("data/pts2"); 
+  
+  //TorusDemo Setup
+  TorusDemo = new torus(Origin, XAxis, new vec(0,0,200), TorusDemo_GOV, 0.4, 40, 100, 4);
+  if (showTorus) F.setTo(Origin);
+  
+  // BiarcDemo Setup
   biarcPoints[0] = P(100,0,0);
   biarcPoints[1] = P(-100,0,0);
   biarcPoints[2] = P(P(100, 0, 0), V(0, -40, 40));
   biarcPoints[3] = P(P(-100, 0, 0), V(40, 40, 40));
-  
   Biarc = new biarc(biarcPoints[0], biarcPoints[1], U(V(biarcPoints[0], biarcPoints[2])), U(V(biarcPoints[1],biarcPoints[3])));
   
-  if (showTorus) F.setTo(Origin);
   smooth(4);
   frameRate(30);
 }
@@ -70,16 +81,14 @@ void draw() {
   setView();  // see pick tab
   showFloor(); // draws dance floor as yellow mat
   doPick(); // sets Of and axes for 3D GUI (see pick Tab)
-  //line(0,0,300, 0,0,0); 
-  
   
   if (showEditorDemo)
   {
-    P.declare(); Q.declare(); R.declare(); // P is a polyloop in 3D: declared in pts
+    P.declare(); Q.declare(); R.declare();
+    P.copyFrom(Pdata); Q.copyFrom(Q); R.copyFrom(P);  // P is a polyloop in 3D: declared in pts
     //P.resetOnCircle(6,100); Q.copyFrom(P); // use this to get started if no model exists on file: move points, save to file, comment this line
-    P.loadPts("data/pts");  Q.loadPts("data/pts2"); // loads saved models from file (comment out if they do not exist yet)
+    // loads saved models from file (comment out if they do not exist yet)
     P.SETppToIDofVertexWithClosestScreenProjectionTo(Mouse()); // for picking (does not set P.pv)
-    R.copyFrom(P); 
     for(int i=0; i<level; i++) 
       {
       Q.copyFrom(R); 

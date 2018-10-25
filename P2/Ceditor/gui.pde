@@ -13,7 +13,7 @@ void keyPressed()
   if(key=='S') {P.addPt(Of,'s');}
   if(key=='B') {P.addPt(Of,'b');}
   if(key=='C') {P.addPt(Of,'c');}
-  if(key=='m') {method=(method+1)%5;}
+  //if(key=='m') {method=(method+1)%5;}
   if(key=='[') {showControl=!showControl;}
   if(key==']') {showQuads=!showQuads;}
   if(key=='{') {showCurve=!showCurve;}
@@ -42,9 +42,13 @@ void keyPressed()
   if(key=='#') exit();
   if(key=='=') {}
   
-  if(key=='e') {showEditorDemo=!showEditorDemo; showTorus=false; F.setTo(Of);}
+  if(key=='e') {showEditorDemo=!showEditorDemo; showTorus=false; showBiarc = false; F.setTo(OriginalO);}
   if(key=='d') {showTorus=!showTorus; showEditorDemo=false; showBiarc = false; F.setTo(Origin);}
   if(key=='b') {showBiarc=!showBiarc; showEditorDemo=false; showTorus = false; F.setTo(Origin);}
+  
+  if(key=='+') {TorusDemo.changeRopeQuantity(true);}
+  if(key=='-') {TorusDemo.changeRopeQuantity(false);}
+  if(key=='m') {TorusDemo.showMainTorus = !TorusDemo.showMainTorus ;}
   change=true;   // to save a frame for the movie when user pressed a key 
   }
 
