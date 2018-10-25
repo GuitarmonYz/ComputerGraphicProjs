@@ -63,7 +63,7 @@ class biarc {
         
         vec bc = V(B, C);
         pt h = P(centrics[0], o1h);
-        stroke(red);
+        stroke(black);
         noFill();
         beginShape();
         for (float i = 0; i < angle_ha; i+=d_angle) {

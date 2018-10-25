@@ -22,8 +22,8 @@ void keyPressed()
   if(key=='|') {showCorrectedKeys=!showCorrectedKeys;}
   if(key=='=') {showTube=!showTube;}
   //if(key=='3') {P.resetOnCircle(3,300); Q.copyFrom(P);}
-  //if(key=='4') {P.resetOnCircle(4,400); Q.copyFrom(P);}
-  //if(key=='5') {P.resetOnCircle(5,500); Q.copyFrom(P);}
+  if(key=='4') {P.resetOnCircle(4,400); Q.copyFrom(P);}
+  if(key=='5') {P.resetOnCircle(5,500); Q.copyFrom(P);}
   if(key=='^') track=!track;
   if(key=='q') Q.copyFrom(P);
   if(key=='p') P.copyFrom(Q);
