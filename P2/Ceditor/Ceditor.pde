@@ -40,6 +40,8 @@ vec TorusDemo_GOV = new vec(50, 0, 0);
 //biarc demo
 pt[] biarcPoints = new pt[4];
 biarc Biarc;
+boolean biarcPickLock = false;
+int pick_point = -1;
 
 void setup() {
   myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
@@ -103,6 +105,7 @@ void draw() {
   
   if (showBiarc) {
     Biarc.drawBiarc();
+    Biarc.updateNearestPoint();
     arrow(biarcPoints[0], biarcPoints[2], 15);
     arrow(biarcPoints[1], biarcPoints[3], 15);
   }

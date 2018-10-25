@@ -56,7 +56,7 @@ void mouseWheel(MouseEvent event)
 
 void mousePressed() 
   {
-   if (!showTorus)
+   if (showEditorDemo)
    {
     //if (!keyPressed) picking=true;
     if (!keyPressed) {P.set_pv_to_pp(); println("picked vertex "+P.pp);}
@@ -66,9 +66,13 @@ void mousePressed()
    // if (!keyPressed) P.setPicked();
     change=true;
    }
-   else
+   else if (showTorus)
    {
      if (!keyPressed) {TorusDemo.lockCurrentpp(); println("picked vertex "+TorusDemo.pp);}
+   }
+   else if (showBiarc) {
+     biarcPickLock = false;
+     println("pressed");
    }
    
   }
@@ -83,6 +87,7 @@ void mouseMoved()
   
 void mouseDragged() 
   {
+   
    if (showEditorDemo)
    {
     if (!keyPressed) P.setPickedTo(Of); 
@@ -134,34 +139,59 @@ void mouseDragged()
    }
    else if (showBiarc)
    {
-     int pick_point = 0;
-     float dist = Integer.MAX_VALUE;
-     for (int i = 0; i < biarcPoints.length;i++) {
-      int cur_dist = norm(V(P(mouseX, mouseY, 0), ToScreen(biarcPoints[i])));
-      if (cur_dist < dist) {
-        pick_point = i;
-        dist = cur_dist;
-      }
-     }
-     if (pick_point == 0 || pick_point == 1) {
-       biarcPoints[0] = ;
-       biarcPoints[1] = ;
-       Biarc.updateVertices();
-       Biarc.updateVectors();
-     } {
-       biarcPoints[2] = ;
-       biarcPoints[3] = ;
-       Biarc.updateVectors();
-     }
-     if (keyPressed && key=='p')  // move focus point vertically
+    //  if (!biarcPickLock) {
+    //    float dist = Integer.MAX_VALUE;
+    //    for (int i = 0; i < biarcPoints.length;i++) {
+    //       pt M = Mouse();
+    //       float cur_dist = d(M,ToScreen(biarcPoints[i]));
+    //       if (cur_dist < dist) {
+    //         pick_point = i;
+    //         dist = cur_dist;
+    //       }
+    //       println(cur_dist);
+    //    }
+    //    println(pick_point);
+    //  }
+     
+     if (keyPressed && key=='h')  // move focus point vertically
       {
-        
-        TorusDemo.updateControlPoints((float)(pmouseY - mouseY), true);
+        biarcPickLock = true;
+        if (pick_point == 0 || pick_point == 1) {
+            if (pick_point == 0) {
+              biarcPoints[0].add(ToIJ(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
+            } else {
+              biarcPoints[1].add(ToIJ(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
+            }
+            Biarc.updateVectors(U(V(biarcPoints[0], biarcPoints[2])), U(V(biarcPoints[1], biarcPoints[3])));
+            Biarc.updateVertices(biarcPoints[0], biarcPoints[1]);
+        } else {
+            if (pick_point == 2) {
+              biarcPoints[2].add(ToIJ(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
+              println("in 2");
+            } else {
+              biarcPoints[3].add(ToIJ(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
+              println("in 3");
+            }
+            Biarc.updateVectors(U(V(biarcPoints[0], biarcPoints[2])), U(V(biarcPoints[1], biarcPoints[3])));
+          }
+          
       }
-      if (keyPressed && key=='s')  // move focus point vertically
+      if (keyPressed && key=='v')  // move focus point vertically
       {
-        TorusDemo.curpp = 0;
-        TorusDemo.updateControlPoints((float)(pmouseY - mouseY), true);
+        biarcPickLock = true;
+        if (pick_point == 0 || pick_point == 1) {
+          if (pick_point == 0) {
+            biarcPoints[0].add(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
+          } else {
+            biarcPoints[1].add(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
+          }
+          Biarc.updateVectors(U(V(biarcPoints[0], biarcPoints[2])), U(V(biarcPoints[1], biarcPoints[3])));
+          Biarc.updateVertices(biarcPoints[0], biarcPoints[1]);
+        } else {
+          if(pick_point == 2) biarcPoints[2].add(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
+          else biarcPoints[3].add(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
+          Biarc.updateVectors(U(V(biarcPoints[0], biarcPoints[2])), U(V(biarcPoints[1], biarcPoints[3])));
+        }
       }
    }
   }  

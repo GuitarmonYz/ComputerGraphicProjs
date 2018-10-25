@@ -90,6 +90,21 @@ class biarc {
         
     }
 
+    public int updateNearestPoint(){
+        if (!biarcPickLock) {
+            float dist = Integer.MAX_VALUE;
+            for (int i = 0; i < biarcPoints.length;i++) {
+                pt M = Mouse();
+                float cur_dist = d(M,ToScreen(biarcPoints[i]));
+                if (cur_dist < dist) {
+                    pick_point = i;
+                    dist = cur_dist;
+                }
+            }
+        }
+       return pick_point;
+    }
+
     private void calculateD() {
         float a = n2(A(U,V)) - 4;
         float b = -2 * d(V(A,D), A(U,V));
