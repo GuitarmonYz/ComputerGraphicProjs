@@ -17,6 +17,8 @@ class torus
             GEndAngle   = 0,
             PStartAngle = 0.25,
             PEndAngle   = 0.25;
+    
+    boolean showMainTorus = true;
 
     pt[][] Vtx = new pt [maxnVtx][maxnVtx];  
     pt[][][] UPathVtx = new pt [maxnRope][maxnVtx][maxnVtx];
@@ -101,7 +103,11 @@ class torus
     {
         calculateVertices();
         
-        drawIndividialTorus(Vtx, true, 0);
+        if (showMainTorus)
+        {
+            drawIndividialTorus(Vtx, true, 0);
+        }
+
         for (int k = 0; k < nRope; k++)
         {
             drawIndividialTorus(UPathVtx[k], false, 1);
@@ -153,10 +159,14 @@ class torus
 
     void drawControlPoints()
     {
-        textSize(32);
-        fill(blue);
-        drawSphere(G, 8);
-        text("G", G.x, G.y, G.z);
+        if (showMainTorus)
+        {
+            textSize(32);
+            fill(blue);
+            drawSphere(G, 8);
+            text("G", G.x, G.y, G.z);
+        }
+
 
         if (nRope != 0)
         {
@@ -177,7 +187,6 @@ class torus
 
     // GUI Control Methods
     void updateControlPoints(float alpha, boolean twist) {
-        println(curpp);
         if (!twist)
         {
             if (curpp == 0)
@@ -202,7 +211,6 @@ class torus
             {
                 GStartAngle += alpha * 0.01;
                 G = P(P(O, TOV), R(GOV, TWO_PI * GStartAngle, U(GOV), U(TOV)));
-                // initialGOV = R(GOV, TWO_PI * GStartAngle, U(GOV), U(TOV));
                 P = P(P(O, TOV), R(GOV, TWO_PI * (GStartAngle + PStartAngle), U(GOV), U(TOV)));
             }
             else if (curpp == 1)
@@ -215,15 +223,15 @@ class torus
 
     void SETppToIDofVertexWithClosestScreenProjectionTo(pt M)  // sets pp to the index of the vertex that projects closest to the mouse 
     {
-        if (nRope == 0)
+        if (nRope == 0 && showMainTorus)
         {
             pp = 0;
         }
-        else if (d(M,ToScreen(G))<=d(M,ToScreen(P))) 
+        else if (d(M,ToScreen(G))<=d(M,ToScreen(P)) && showMainTorus) 
         {
             pp = 0;
         } 
-        else
+        else if (nRope > 0)
         {
             pp = 1;
         }
@@ -232,6 +240,18 @@ class torus
     void lockCurrentpp()
     {
         curpp = pp;
+    }
+
+    void changeRopeQuantity(boolean addsub)
+    {
+        if (addsub && nRope < maxnRope)
+        {
+            nRope++;
+        }
+        else if (!addsub & nRope > 0)
+        {
+            nRope--;
+        }
     }
  
     

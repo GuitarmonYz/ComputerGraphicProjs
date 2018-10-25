@@ -116,15 +116,15 @@ class pts // class for manipulaitng and displaying pointclouds or polyloops in 3
   
   void loadPts(String fn) 
     {
-    println("loading: "+fn); 
+    //println("loading: "+fn); 
     String [] ss = loadStrings(fn);
-    String subpts;
     int s=0;   int comma, comma1, comma2;   float x, y;   int a, b, c;
-    nv = int(ss[s++]); print("nv="+nv);
+    nv = int(ss[s++]); 
+    //print("nv="+nv);
     for(int k=0; k<nv; k++) 
       {
       int i=k+s; 
-      //float [] xy = float(split(ss[i],",")); 
+      float [] xy = float(split(ss[i],",")); 
       String [] SS = split(ss[i],","); 
       G[k].setTo(float(SS[0]),float(SS[1]),float(SS[2]));
       L[k]=SS[3].charAt(0);
