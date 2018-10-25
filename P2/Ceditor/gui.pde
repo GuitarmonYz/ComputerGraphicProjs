@@ -142,21 +142,7 @@ void mouseDragged()
      }
    }
    else if (showBiarc)
-   {
-    //  if (!biarcPickLock) {
-    //    float dist = Integer.MAX_VALUE;
-    //    for (int i = 0; i < biarcPoints.length;i++) {
-    //       pt M = Mouse();
-    //       float cur_dist = d(M,ToScreen(biarcPoints[i]));
-    //       if (cur_dist < dist) {
-    //         pick_point = i;
-    //         dist = cur_dist;
-    //       }
-    //       println(cur_dist);
-    //    }
-    //    println(pick_point);
-    //  }
-     
+   { 
      if (keyPressed && key=='h')  // move focus point horizontally
       {
         biarcPickLock = true;
@@ -165,13 +151,10 @@ void mouseDragged()
             if (pick_point == 0) {
               biarcPoints[0].add(ToIJ(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
               biarcPoints[2].add(ToIJ(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
-              // biarcPoints[2] = P(biarcPoints[0], V(40, U(V(biarcPoints[0], biarcPoints[2]))));
             } else {
               biarcPoints[1].add(ToIJ(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
               biarcPoints[3].add(ToIJ(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
-              // biarcPoints[3] = P(biarcPoints[1], V(40, U(V(biarcPoints[1], biarcPoints[3]))));
             }
-            // Biarc.updateVectors(U(V(biarcPoints[0], biarcPoints[2])), U(V(biarcPoints[1], biarcPoints[3])));
             Biarc.updateVertices(biarcPoints[0], biarcPoints[1]);
         } else {
             if (pick_point == 2) {
@@ -192,13 +175,10 @@ void mouseDragged()
           if (pick_point == 0) {
             biarcPoints[0].add(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
             biarcPoints[2].add(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
-            // biarcPoints[2] = P(biarcPoints[0], V(40, U(V(biarcPoints[0], biarcPoints[2]))));
           } else {
             biarcPoints[1].add(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
             biarcPoints[3].add(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0)));
-            // biarcPoints[3] = P(biarcPoints[1], V(40, U(V(biarcPoints[1], biarcPoints[3]))));
           }
-          // Biarc.updateVectors(U(V(biarcPoints[0], biarcPoints[2])), U(V(biarcPoints[1], biarcPoints[3])));
           Biarc.updateVertices(biarcPoints[0], biarcPoints[1]);
         } else {
           if(pick_point == 2) {
