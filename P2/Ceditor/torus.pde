@@ -1,14 +1,14 @@
 class torus
 {
-    int     maxnVtx = 1000,
-            maxnRope = 10,
+    int     maxnVtx = 100,
+            maxnRope = 2,
             nVtx = 0,
             unv = 0,
             nv = 0,
             nu = 0,
             pp = 0,
             curpp = 0,
-            nRope = 6;
+            nRope = 0;
     float   e = 0.5,
             R = 0,
             r = 0;
@@ -23,7 +23,7 @@ class torus
     pt[][] Vtx = new pt [maxnVtx][maxnVtx];  
     pt[][][] UPathVtx = new pt [maxnRope][maxnVtx][maxnVtx];
     pt O, G, P;
-    vec XAxis, TOV, GOV, POV, initialGOV, Y;
+    vec XAxis, TOV, GOV, POV, initialGOV, Y, lastGOV;
     
     
     // Methods in Torus Class
@@ -31,9 +31,13 @@ class torus
     {
         for (int i=0; i<maxnVtx; i++) 
         {
-            for (int j=0; j<maxnVtx; j++)
+            for (int j=0; j<maxnVtx; j++)   
             {
                 Vtx[i][j] = P();
+                for (int k = 0; k < maxnRope; k++)
+                {
+                    UPathVtx[k][i][j] = P();
+                }
             }
         }
     }
@@ -71,23 +75,46 @@ class torus
         calculateVertices();
     }
 
+    void updateTorus(pt O, vec XAxis, vec TOV, vec GOV, float e, int nv, int nu, int unv)
+    {
+        this.O = O;
+        this.XAxis = XAxis;
+        this.TOV = TOV;
+        this.GOV = GOV;
+        this.POV = V(0.1, GOV);
+        this.initialGOV = GOV;
+        r = GOV.norm();
+        R = TOV.norm();
+        this.e = e;
+        this.nv = nv;
+        this.nu = nu;
+        this.unv = unv;
+        nVtx = nv * nu;
+        Y = cross(TOV, XAxis).normalize();
+        G = P(P(O, TOV), R(GOV, TWO_PI * GStartAngle, U(GOV), U(TOV)));
+        P = P(P(O, TOV), R(GOV, TWO_PI * PStartAngle, U(GOV), U(TOV)));
+    }
+
     void calculateVertices() {
         float GAngleDiff = GStartAngle - GEndAngle;
         float PAngleDiff = PStartAngle - PEndAngle;
         for (int i=0; i < nu; i++)
         {
-            vec curTOV = R(TOV, TWO_PI * e / (nu-1) * i, U(TOV), Y);
+            vec curTOV = R(TOV, TWO_PI * e / (nu-1) * i, Y, U(TOV));
             pt curOrigin = P(O, curTOV);
+            vec tempGOV = R(initialGOV, TWO_PI * e / (nu-1) * i, Y, U(TOV));
+            // arrow(curOrigin, tempGOV, 5);
             for (int j=0; j < nv; j++)
             {  
-                vec tempGOV = R(initialGOV, TWO_PI * e / (nu-1) * i, U(TOV), Y);
+               
                 vec curGOV = R(tempGOV, TWO_PI * GAngleDiff / (nu-1) * (nu - i - 1) + TWO_PI / nv * j, U(GOV), U(curTOV));
                 Vtx[i][j] = P(curOrigin, curGOV);
+                line(curOrigin.x, curOrigin.y, curOrigin.z, Vtx[i][j].x, Vtx[i][j].y, Vtx[i][j].z);
             }
 
             for (int k = 0; k < nRope; k++)
             {
-                vec initialPOV = R(R(POV, TWO_PI / nRope * k, U(POV), U(TOV)), TWO_PI * e / (nu-1) * i, U(TOV), Y);
+                vec initialPOV = R(R(POV, TWO_PI / nRope * k, U(POV), U(TOV)), TWO_PI * e / (nu-1) * i, Y, U(TOV));
                 pt curPOrigin = P(curOrigin, R(V(curOrigin, R(P, TWO_PI * e / (nu-1) * i, U(TOV), U(Y), O)), TWO_PI * (-GAngleDiff - PAngleDiff) / (nu-1) * i + TWO_PI / nRope * k, U(GOV), U(curTOV)));
                 for (int j = 0; j < unv; j++)
                 {
@@ -95,12 +122,16 @@ class torus
                     UPathVtx[k][i][j] = P(curPOrigin, curPOV);
                 }
             }
+
+            if (i == nu-1)  lastGOV = tempGOV;
+
         }
     }
 
     //Rendering Methods
     void drawTorus()
     {
+        
         calculateVertices();
         
         if (showMainTorus)
@@ -114,6 +145,8 @@ class torus
         }
 
         drawControlPoints();
+
+        // drawSphere(O, 10);
     }
 
     void drawIndividialTorus(pt[][] curVtx, boolean c, int type)
@@ -254,17 +287,25 @@ class torus
         }
     }
  
-    
-
-
-
-
-
-
-
-
-
-
-    
-
 }
+
+public void drawToruses(biarc[] biarcs, torus[] toruses, pts P_)
+{
+    int vertexQuantity = P_.nv;
+    for (int i = 0; i < vertexQuantity; i++)
+    {
+        pt[] Os = biarcs[i].centrics;
+        vec[] Xaxies = biarcs[i].axises;
+        vec[] TOVs = biarcs[i].tovs;
+        float[] Es = biarcs[i].angles;
+        fill(red);
+        // toruses[2*i].drawSphere(Os[0], 20);
+        toruses[2*i].updateTorus(Os[0], Xaxies[0], TOVs[0],V(100, U(Xaxies[0])), Es[0], demoTorusnv, demoTorusnu, demoTorusunv);
+        toruses[2*i].drawTorus();
+        toruses[2*i+1].updateTorus(Os[1], Xaxies[1], TOVs[1],V(100, U(Xaxies[1])), Es[1], demoTorusnv, demoTorusnu, demoTorusunv);
+        toruses[2*i+1].drawTorus();
+        
+        
+    }
+}
+//torus(pt O, vec XAxis, vec TOV, vec GOV, float e, int nv, int nu, int unv)

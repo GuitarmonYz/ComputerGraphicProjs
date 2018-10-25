@@ -10,6 +10,7 @@ class biarc {
     public float[] radius;
     public vec[] axises;
     public vec[] tovs;
+    public float[] angles;
     //int maxNvx = 1000;
     //pt[] firstArc;
     //pt[] secondArc;
@@ -28,6 +29,7 @@ class biarc {
         radius = new float[2];
         axises = new vec[2];
         tovs = new vec[2];
+        angles = new float[2];
         calculateD();
     }
 
@@ -52,17 +54,22 @@ class biarc {
         axises[0] = cross(o1h, bh);
         tovs[0] = V(centrics[0], A);
         float angle_ha = angle(o1h, V(centrics[0], A));
+        angles[0] = angle_ha / TWO_PI;
         
         vec co = V(C, centrics[1]);
         vec ch = V(d, U(V(C,B)));
         vec o2h = M(ch, co);
         radius[1] = n(o2h);
-        axises[1] = cross(o2h, ch);
+        axises[1] = cross(ch, o2h);
         tovs[1] = o2h;
         float angle_hd = angle(o2h, V(centrics[1], D));
-        
+        angles[1] = angle_hd / TWO_PI;
+
         vec bc = V(B, C);
         pt h = P(centrics[0], o1h);
+        fill(yellow);
+        drawSphere(h, 20);
+
         stroke(red);
         noFill();
         beginShape();
@@ -75,9 +82,9 @@ class biarc {
             vertex(a.x, a.y, a.z);
         }
         endShape();
-        //fill(red);
-        //drawSphere(centrics[0]);
-        //drawSphere(centrics[1]);
+        // fill(yellow);
+        // drawSphere(centrics[0], 10);
+        // drawSphere(centrics[1], 10);
         //fill(green);
         //drawSphere(A);
         //drawSphere(D);
@@ -126,6 +133,14 @@ class biarc {
         float norm_o2c = d / cos(angle(cd, cb) / 2);
         vec co2 = V(norm_o2c, U(A(cd, V(0.5, cb))));
         this.centrics[1] = P(C, co2);
+    }
+
+    void drawSphere(pt pnt, int r)
+    {
+        pushMatrix();
+        translate(pnt.x, pnt.y, pnt.z);
+        sphere(r);
+        popMatrix();
     }
 }
 public vec[] getTangents(pts P_) {

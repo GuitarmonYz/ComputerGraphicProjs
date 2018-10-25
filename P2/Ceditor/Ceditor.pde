@@ -34,8 +34,13 @@ pt OriginalO = P(100,100,0);
 pts P = new pts(); // polyloop in 3D
 pts Q = new pts(); // second polyloop in 3D
 pts R = new pts(); // inbetweening polyloop L(P,t,Q);
+int demoTorusnv = 4,
+    demoTorusnu = 10,
+    demoTorusunv = 4;
 
 biarc[] demoBiarc = new biarc[50];
+torus[] demoTorus = new torus[100];
+
 
 //torus demo
 pt Origin = new pt(0,0,300);
@@ -58,6 +63,11 @@ void setup() {
   P.declare(); Q.declare(); R.declare();
   P.loadPts("data/pts");  Q.loadPts("data/pts2"); 
   drawBiarcs(demoBiarc, P);
+  for (int i = 0; i < 100; i++)
+  {
+    demoTorus[i] = new torus();
+  }
+  drawToruses(demoBiarc, demoTorus, P);
   
   //TorusDemo Setup
   TorusDemo = new torus(Origin, XAxis, new vec(0,0,200), TorusDemo_GOV, 0.4, 40, 100, 4);
@@ -72,7 +82,7 @@ void setup() {
   
   
 
-  smooth(4);
+  noSmooth();
   frameRate(30);
 }
 
@@ -109,6 +119,7 @@ void draw() {
     fill(yellow,100); P.showPicked(); 
 
     drawBiarcs(demoBiarc, P);
+    drawToruses(demoBiarc, demoTorus, P);
   }
   
   if (showTorus)
