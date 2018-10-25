@@ -134,35 +134,35 @@ void mouseDragged()
    }
    else if (showBiarc)
    {
-     int pick_point = 0;
-     float dist = Integer.MAX_VALUE;
-     for (int i = 0; i < biarcPoints.length;i++) {
-      int cur_dist = norm(V(P(mouseX, mouseY, 0), ToScreen(biarcPoints[i])));
-      if (cur_dist < dist) {
-        pick_point = i;
-        dist = cur_dist;
-      }
-     }
-     if (pick_point == 0 || pick_point == 1) {
-       biarcPoints[0] = ;
-       biarcPoints[1] = ;
-       Biarc.updateVertices();
-       Biarc.updateVectors();
-     } {
-       biarcPoints[2] = ;
-       biarcPoints[3] = ;
-       Biarc.updateVectors();
-     }
-     if (keyPressed && key=='p')  // move focus point vertically
-      {
+     //int pick_point = 0;
+     //float dist = Integer.MAX_VALUE;
+     //for (int i = 0; i < biarcPoints.length;i++) {
+     // int cur_dist = norm(V(P(mouseX, mouseY, 0), ToScreen(biarcPoints[i])));
+     // if (cur_dist < dist) {
+     //   pick_point = i;
+     //   dist = cur_dist;
+     // }
+     //}
+     //if (pick_point == 0 || pick_point == 1) {
+     //  biarcPoints[0] = ;
+     //  biarcPoints[1] = ;
+     //  Biarc.updateVertices();
+     //  Biarc.updateVectors();
+     //} {
+     //  biarcPoints[2] = ;
+     //  biarcPoints[3] = ;
+     //  Biarc.updateVectors();
+     //}
+     //if (keyPressed && key=='p')  // move focus point vertically
+     // {
         
-        TorusDemo.updateControlPoints((float)(pmouseY - mouseY), true);
-      }
-      if (keyPressed && key=='s')  // move focus point vertically
-      {
-        TorusDemo.curpp = 0;
-        TorusDemo.updateControlPoints((float)(pmouseY - mouseY), true);
-      }
+     //   TorusDemo.updateControlPoints((float)(pmouseY - mouseY), true);
+     // }
+     // if (keyPressed && key=='s')  // move focus point vertically
+     // {
+     //   TorusDemo.curpp = 0;
+     //   TorusDemo.updateControlPoints((float)(pmouseY - mouseY), true);
+     // }
    }
   }  
 

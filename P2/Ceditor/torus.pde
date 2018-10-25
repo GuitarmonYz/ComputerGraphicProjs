@@ -1,22 +1,25 @@
 class torus
 {
     int     maxnVtx = 1000,
+            maxnRope = 10,
             nVtx = 0,
             unv = 0,
             nv = 0,
             nu = 0,
             pp = 0,
-            curpp = 0;
+            curpp = 0,
+            nRope = 6;
     float   e = 0.5,
             R = 0,
             r = 0;
+
     float   GStartAngle = 0,
             GEndAngle   = 0,
             PStartAngle = 0.25,
             PEndAngle   = 0.25;
 
-    pt[][] Vtx = new pt [maxnVtx][maxnVtx];
-    pt[][] UPathVtx = new pt [maxnVtx][maxnVtx];
+    pt[][] Vtx = new pt [maxnVtx][maxnVtx];  
+    pt[][][] UPathVtx = new pt [maxnRope][maxnVtx][maxnVtx];
     pt O, G, P;
     vec XAxis, TOV, GOV, POV, initialGOV, Y;
     
@@ -53,7 +56,10 @@ class torus
             for (int j=0; j<maxnVtx; j++)   
             {
                 Vtx[i][j] = P();
-                UPathVtx[i][j] = P();
+                for (int k = 0; k < maxnRope; k++)
+                {
+                    UPathVtx[k][i][j] = P();
+                }
             }
         }
         Y = cross(TOV, XAxis).normalize();
@@ -70,20 +76,23 @@ class torus
         {
             vec curTOV = R(TOV, TWO_PI * e / (nu-1) * i, U(TOV), Y);
             pt curOrigin = P(O, curTOV);
-            vec initialPOV = R(R(POV, 0, U(POV), U(TOV)), TWO_PI * e / (nu-1) * i, U(TOV), Y);
-            pt curPOrigin = P(curOrigin, R(V(curOrigin, R(P, TWO_PI * e / (nu-1) * i, U(TOV), U(Y), O)), TWO_PI * (-GAngleDiff - PAngleDiff) / (nu-1) * i , U(GOV), U(curTOV)));
             for (int j=0; j < nv; j++)
             {  
                 vec tempGOV = R(initialGOV, TWO_PI * e / (nu-1) * i, U(TOV), Y);
                 vec curGOV = R(tempGOV, TWO_PI * GAngleDiff / (nu-1) * (nu - i - 1) + TWO_PI / nv * j, U(GOV), U(curTOV));
                 Vtx[i][j] = P(curOrigin, curGOV);
             }
-            for (int j = 0; j < unv; j++)
-            {
-                vec curPOV = R(initialPOV, TWO_PI / unv * j, U(GOV), U(curTOV));
-                UPathVtx[i][j] = P(curPOrigin, curPOV);
-            }
 
+            for (int k = 0; k < nRope; k++)
+            {
+                vec initialPOV = R(R(POV, TWO_PI / nRope * k, U(POV), U(TOV)), TWO_PI * e / (nu-1) * i, U(TOV), Y);
+                pt curPOrigin = P(curOrigin, R(V(curOrigin, R(P, TWO_PI * e / (nu-1) * i, U(TOV), U(Y), O)), TWO_PI * (-GAngleDiff - PAngleDiff) / (nu-1) * i + TWO_PI / nRope * k, U(GOV), U(curTOV)));
+                for (int j = 0; j < unv; j++)
+                {
+                    vec curPOV = R(initialPOV, TWO_PI / unv * j, U(GOV), U(curTOV));
+                    UPathVtx[k][i][j] = P(curPOrigin, curPOV);
+                }
+            }
         }
     }
 
@@ -93,7 +102,10 @@ class torus
         calculateVertices();
         
         drawIndividialTorus(Vtx, true, 0);
-        drawIndividialTorus(UPathVtx, false, 1);
+        for (int k = 0; k < nRope; k++)
+        {
+            drawIndividialTorus(UPathVtx[k], false, 1);
+        }
 
         drawControlPoints();
     }
@@ -146,9 +158,12 @@ class torus
         drawSphere(G, 8);
         text("G", G.x, G.y, G.z);
 
-        fill(brown);
-        drawSphere(P, 8);
-        text("P", P.x, P.y, P.z);
+        if (nRope != 0)
+        {
+            fill(brown);
+            drawSphere(P, 8);
+            text("P", P.x, P.y, P.z);
+        }
     }
 
     void drawSphere(pt pnt, int r)
@@ -162,7 +177,7 @@ class torus
 
     // GUI Control Methods
     void updateControlPoints(float alpha, boolean twist) {
-
+        println(curpp);
         if (!twist)
         {
             if (curpp == 0)
@@ -200,17 +215,18 @@ class torus
 
     void SETppToIDofVertexWithClosestScreenProjectionTo(pt M)  // sets pp to the index of the vertex that projects closest to the mouse 
     {
-        if (d(M,ToScreen(G))<=d(M,ToScreen(P))) 
+        if (nRope == 0)
         {
-            pp=0;
+            pp = 0;
+        }
+        else if (d(M,ToScreen(G))<=d(M,ToScreen(P))) 
+        {
+            pp = 0;
         } 
         else
         {
-            pp=1;
+            pp = 1;
         }
-
-
-
     }
 
     void lockCurrentpp()
