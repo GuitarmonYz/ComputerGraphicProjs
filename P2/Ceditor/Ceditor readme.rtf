@@ -1,0 +1,46 @@
+{\rtf1\ansi\ansicpg1252\cocoartf1671
+{\fonttbl\f0\froman\fcharset0 Times-Roman;}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+{\info
+{\author Jarek Rossignac}
+{\*\company Georgia Tech}
+{\*\copyright 2012}}\margl1440\margr1440\vieww21600\viewh13800\viewkind0
+\pard\tx720\tx1440\tx2160\tx2880\tx3600\tx4320\tx5040\tx5760\tx6480\tx7200\tx7920\tx8640\pardirnatural\partightenfactor0
+
+\f0\fs36 \cf0 Ceditor readme\
+Move camera forward/back: \'91 +    move mouse vertically or use wheel\
+Rotate around small red dot F at center of screen: space + move mouse\
+Move F horizontally (parallel to floor): t + drag mouse (mouse button pressed)\
+Move F vertically : T + drag mouse (mouse button pressed) vertically\
+Move control curve horizontally:  X + drag mouse (mouse button pressed)\
+Move control curve vertically:  Z + drag mouse (mouse button pressed) vertically\
+Change subdivision level: press , or . \
+	(I am showing and animating only every 4th vertex of the subdivided  ttttttt\
+curve)\
+	in pts,  in displaySkater(), see:\
+	if(showKeys) \{fill(cyan); for (int j=0; j<nv; j+=4) arrow(B[j],G[j],3);\}\
+To select a control point, click on it (it will be indicated by a semitransparent yellow sphere)\
+When you press the mouse button and drag it on the floor, the selected point will follow the mouse and be projected on the floor\
+So, you ay want to first design the shadow projection of your curve on the floor by selecting and dragging control points\
+To insert a new control point, move the mouse close to a yellow edge and press and release i\
+Then you can press the mouse button and drag that point to a new location\
+To delete a control point,  point to it with the mouse and press & release d\
+To move the selected point up or down keep z pressed and drag mouse (mouse button pressed) vertically\
+To move the selected point horizontally parallel to the floor keep x pressed and drag mouse (mouse button pressed) in any direction\
+To hide/show the subdivided yellow curve, press \{\
+To hide/show the magenta control, press [\
+To hide/show the cyan arrows, press \\\
+To hide/show the offset green curve, press \}\
+To stop/start animation press a\
+To switch the subdivision method press m\
+	I implemented a dummy sunbivision method \
+	In draw() see:     if(method==4) \{Q.subdivideDemoInto(R);\} and line 150 in pots\
+	Replace it with the 5 subdivision methods suggested and uncomment this calls in draw()\
+\
+	displaySkater() line 162 of pts does some of the work for you and animates a red arrow\
+	But it construct the green offset curve directly above the yellow one : you need to fix that\
+	You want also to replace the red by a skate border sliding on the green curve\
+\
+ -Jarek\
+}
