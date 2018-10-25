@@ -31,8 +31,6 @@ int
 String SDA = "angle";
 float defectAngle=0;
 pt OriginalO = P(100,100,0);
-pts Pdata = new pts();
-pts Qdata = new pts();
 pts P = new pts(); // polyloop in 3D
 pts Q = new pts(); // second polyloop in 3D
 pts R = new pts(); // inbetweening polyloop L(P,t,Q);
@@ -55,8 +53,8 @@ void setup() {
   size(1000, 1000, P3D); // P3D means that we will do 3D graphics
   
   //CEditorDemo Setup
-  Pdata.declare(); Qdata.declare();
-  Pdata.loadPts("data/pts");  Qdata.loadPts("data/pts2"); 
+  P.declare(); Q.declare(); R.declare();
+  P.loadPts("data/pts");  Q.loadPts("data/pts2"); 
   
   //TorusDemo Setup
   TorusDemo = new torus(Origin, XAxis, new vec(0,0,200), TorusDemo_GOV, 0.4, 40, 100, 4);
@@ -84,11 +82,11 @@ void draw() {
   
   if (showEditorDemo)
   {
-    P.declare(); Q.declare(); R.declare();
-    P.copyFrom(Pdata); Q.copyFrom(Q); R.copyFrom(P);  // P is a polyloop in 3D: declared in pts
+// P is a polyloop in 3D: declared in pts
     //P.resetOnCircle(6,100); Q.copyFrom(P); // use this to get started if no model exists on file: move points, save to file, comment this line
     // loads saved models from file (comment out if they do not exist yet)
     P.SETppToIDofVertexWithClosestScreenProjectionTo(Mouse()); // for picking (does not set P.pv)
+    R.copyFrom(P);
     for(int i=0; i<level; i++) 
       {
       Q.copyFrom(R); 
@@ -99,9 +97,9 @@ void draw() {
       //if(method==1) {Q.subdivideFourPointInto(R);}
       //if(method==0) {Q.subdivideQuadraticInto(R); }
       }
-    R.displaySkater();
+    //R.displaySkater();
     
-    fill(blue); if(showCurve) Q.drawClosedCurve(3);
+    //fill(blue); if(showCurve) Q.drawClosedCurve(3);
     if(showControl) {fill(grey); P.drawClosedCurve(10);}  // draw control polygon 
     fill(yellow,100); P.showPicked(); 
   }

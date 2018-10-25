@@ -62,7 +62,7 @@ void mousePressed()
   {
    if (showEditorDemo)
    {
-    //if (!keyPressed) picking=true;
+    if (!keyPressed) picking=true;
     if (!keyPressed) {P.set_pv_to_pp(); println("picked vertex "+P.pp);}
     if(keyPressed && key=='a') {P.addPt(Of);}
   //  if(keyPressed && (key=='f' || key=='s' || key=='b' || key=='c')) {P.addPt(Of,key);}
