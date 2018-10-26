@@ -129,16 +129,16 @@ void mouseDragged()
       if (keyPressed && key=='p')  // move focus point vertically
       {
         TorusDemo.curpp = 1;
-        TorusDemo.updateControlPoints((float)(pmouseY - mouseY), true);
+        TorusDemo.updateControlPoints(0.01 * (float)(pmouseY - mouseY), true);
       }
       if (keyPressed && key=='s')  // move focus point vertically
       {
         TorusDemo.curpp = 0;
-        TorusDemo.updateControlPoints((float)(pmouseY - mouseY), true);
+        TorusDemo.updateControlPoints(0.01 * (float)(pmouseY - mouseY), true);
       }
      if (!keyPressed) 
      {
-       TorusDemo.updateControlPoints((float)(pmouseY - mouseY), false);
+       TorusDemo.updateControlPoints(0.01 * (float)(pmouseY - mouseY), false);
      }
    }
    else if (showBiarc)
