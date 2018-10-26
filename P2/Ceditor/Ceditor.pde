@@ -70,7 +70,7 @@ void setup() {
   drawToruses(demoBiarc, demoTorus, P);
   
   //TorusDemo Setup
-  TorusDemo = new torus(Origin, XAxis, new vec(0,0,200), TorusDemo_GOV, 0.4, 40, 100, 4);
+  TorusDemo = new torus(Origin, XAxis, XAxis, new vec(0,0,200), TorusDemo_GOV, 0.4, 40, 100, 4);
   if (showTorus) F.setTo(Origin);
   
   // BiarcDemo Setup
