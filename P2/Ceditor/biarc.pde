@@ -11,20 +11,12 @@ class biarc {
     public vec[] axises;
     public vec[] tovs;
     public float[] angles;
-    //int maxNvx = 1000;
-    //pt[] firstArc;
-    //pt[] secondArc;
     float d_angle = TWO_PI / 36;
     public biarc (pt A, pt D, vec U, vec V) {
         this.A = A;
         this.D = D;
         this.U = U;
         this.V = V;
-        //firstArc = new pt[maxNvx];
-        //secondArc = new pt[maxNvx];
-        //for (int i = 0; i < maxNvx; i++) {
-        //    firstArc[i] = P();
-        //}
         centrics = new pt[2];
         radius = new float[2];
         axises = new vec[2];
@@ -96,7 +88,6 @@ class biarc {
         //fill(blue);
         //drawSphere(P(centrics[0], o1h));
         //drawSphere(P(centrics[1], o2h));
-        
     }
 
     public int updateNearestPoint(){
