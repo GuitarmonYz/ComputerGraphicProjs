@@ -70,7 +70,8 @@ class biarc {
         fill(yellow);
         drawSphere(h, 20);
 
-        stroke(red);
+        stroke(green);
+        strokeWeight(5);
         noFill();
         beginShape();
         for (float i = 0; i < angle_ha; i+=d_angle) {
@@ -82,6 +83,7 @@ class biarc {
             vertex(a.x, a.y, a.z);
         }
         endShape();
+        strokeWeight(1);
         // fill(yellow);
         // drawSphere(centrics[0], 10);
         // drawSphere(centrics[1], 10);

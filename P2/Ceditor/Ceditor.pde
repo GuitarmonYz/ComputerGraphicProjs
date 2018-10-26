@@ -35,7 +35,7 @@ pts P = new pts(); // polyloop in 3D
 pts Q = new pts(); // second polyloop in 3D
 pts R = new pts(); // inbetweening polyloop L(P,t,Q);
 int demoTorusnv = 4,
-    demoTorusnu = 10,
+    demoTorusnu = 40,
     demoTorusunv = 4;
 
 biarc[] demoBiarc = new biarc[50];
@@ -70,7 +70,7 @@ void setup() {
   drawToruses(demoBiarc, demoTorus, P);
   
   //TorusDemo Setup
-  TorusDemo = new torus(Origin, XAxis, new vec(0,0,200), TorusDemo_GOV, 0.4, 40, 100, 4);
+  TorusDemo = new torus(Origin, XAxis, new vec(0,0,200), TorusDemo_GOV, TorusDemo_GOV, 0.4, 40, 100, 4);
   if (showTorus) F.setTo(Origin);
   
   // BiarcDemo Setup
