@@ -31,7 +31,11 @@ void keyPressed()
   if(key=='.') {level++;f=0;}
 
   //if(key=='e') {R.copyFrom(P); P.copyFrom(Q); Q.copyFrom(R);}
-  if(key=='d') {P.set_pv_to_pp(); P.deletePicked();}
+  // if(key=='d') {P.set_pv_to_pp(); P.deletePicked();}
+  if (keyPressed && key=='d') {
+      println("pressed p");
+      updateAngle(demoBiarc, demoTorus, P);
+    }
   if(key=='i') P.insertClosestProjection(Of); // Inserts new vertex in P that is the closeset projection of O
   if(key=='W') {P.savePts("data/pts"); Q.savePts("data/pts2");}  // save vertices to pts2
   if(key=='L') {P.loadPts("data/pts"); Q.loadPts("data/pts2");}   // loads saved model
@@ -112,6 +116,7 @@ void mouseDragged()
       if(center) F.sub(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0))); 
       else F.add(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0))); 
       }
+    
     change=true;
     twistCnt = 0;
     flg = true;
