@@ -123,8 +123,8 @@ float norm(vec V) {return sqrt(n2(V));};                                        
 float d(pt P, pt Q) {return sqrt(sq(Q.x-P.x)+sq(Q.y-P.y)+sq(Q.z-P.z)); };                            // ||AB|| distance
 float area(pt A, pt B, pt C) {return n(N(A,B,C))/2; };                                               // (positive) area of triangle in 3D
 float volume(pt A, pt B, pt C, pt D) {return m(V(A,B),V(A,C),V(A,D))/6; };                           // (signed) volume of tetrahedron
-boolean parallel (vec U, vec V) {return n(N(U,V))<n(U)*n(V)*0.00001; }                               // true if U and V are almost parallel
-float angle(vec U, vec V) {return acos(d(U,V)/n(V)/n(U)); };                                         // angle(U,V) positive  (in 0,PI)
+boolean parallel (vec U, vec V) {return n(N(U,V))<n(U)*n(V)*0.00001; };                               // true if U and V are almost parallel
+float angle(vec U, vec V) {return acos(d(U,V)/(n(V)*n(U)+0.00001)); };                                         // angle(U,V) positive  (in 0,PI)
 boolean cw(vec U, vec V, vec W) {return m(U,V,W)>0; };                                               // U*(VxW)>0  U,V,W are clockwise in 3D
 boolean cw(pt A, pt B, pt C, pt D) {return volume(A,B,C,D)>0; };                                     // tet is oriented so that A sees B, C, D clockwise 
 boolean projectsBetween(pt P, pt A, pt B) {return dot(V(A,P),V(A,B))>0 && dot(V(B,P),V(B,A))>0 ; };

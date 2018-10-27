@@ -8,15 +8,15 @@ class torus
             nu = 0,
             pp = 0,
             curpp = 0,
-            nRope = 4;
+            nRope = 1;
     float   e = 0.5,
             R = 0,
             r = 0;
 
     float   GStartAngle = 0,
             GEndAngle   = 0,
-            PStartAngle = 0.25,
-            PEndAngle   = 0.25;
+            PStartAngle = 0.25 * TWO_PI,
+            PEndAngle   = 0.25 * TWO_PI;
     
     boolean showMainTorus = true;
 
@@ -70,8 +70,8 @@ class torus
             }
         }
         Y = cross(TOV, XAxis).normalize();
-        G = P(P(O, TOV), R(GOV, TWO_PI * GStartAngle, U(normalGOV), U(TOV)));
-        P = P(P(O, TOV), R(GOV, TWO_PI * PStartAngle, U(normalGOV), U(TOV)));
+        G = P(P(O, TOV), R(GOV, GStartAngle, U(normalGOV), U(TOV)));
+        P = P(P(O, TOV), R(GOV, PStartAngle, U(normalGOV), U(TOV)));
         
         calculateVertices();
     }
@@ -92,13 +92,13 @@ class torus
         this.unv = unv;
         nVtx = nv * nu;
         Y = cross(TOV, XAxis).normalize();
-        G = P(P(O, TOV), R(GOV, TWO_PI * GStartAngle, U(normalGOV), U(TOV)));
-        P = P(P(O, TOV), R(GOV, TWO_PI * PStartAngle, U(normalGOV), U(TOV)));
+        G = P(P(O, TOV), R(GOV, GStartAngle, U(normalGOV), U(TOV)));
+        P = P(P(O, TOV), R(GOV, PStartAngle, U(normalGOV), U(TOV)));
     }
 
     void calculateVertices() {
-        float GAngleDiff = GStartAngle - GEndAngle;
-        float PAngleDiff = PStartAngle - PEndAngle;
+        float GAngleDiff = -(GEndAngle - GStartAngle);
+        float PAngleDiff = PEndAngle - PStartAngle;
         for (int i=0; i < nu; i++)
         {
             vec curTOV = R(TOV, TWO_PI * e / (nu-1) * i, Y, U(TOV));
@@ -107,7 +107,7 @@ class torus
             // arrow(curOrigin, tempGOV, 5);
             for (int j=0; j < nv; j++)
             {  
-                vec curGOV = R(tempGOV, TWO_PI * GAngleDiff / (nu-1) * (nu - i - 1) + TWO_PI / nv * j, U(GOV), U(curTOV));
+                vec curGOV = R(tempGOV, GAngleDiff / (nu-1) * (i) + TWO_PI / nv * j, U(GOV), U(curTOV));
                 Vtx[i][j] = P(curOrigin, curGOV);
                 // line(curOrigin.x, curOrigin.y, curOrigin.z, Vtx[i][j].x, Vtx[i][j].y, Vtx[i][j].z);
             }
@@ -115,7 +115,7 @@ class torus
             for (int k = 0; k < nRope; k++)
             {
                 vec initialPOV = R(R(POV, TWO_PI / nRope * k, U(GOV), U(TOV)), TWO_PI * e / (nu-1) * i, Y, U(TOV));
-                pt curPOrigin = P(curOrigin, R(V(curOrigin, R(P, TWO_PI * e / (nu-1) * i, Y, U(TOV), O)), TWO_PI * (-GAngleDiff - PAngleDiff) / (nu-1) * i + TWO_PI / nRope * k, U(GOV), U(curTOV)));
+                pt curPOrigin = P(curOrigin, R(V(curOrigin, R(P, TWO_PI * e / (nu-1) * i, Y, U(TOV), O)), (GAngleDiff + PAngleDiff) / (nu-1) * i + TWO_PI / nRope * k, U(GOV), U(curTOV)));
                 for (int j = 0; j < unv; j++)
                 {
                     vec curPOV = R(initialPOV, TWO_PI / unv * j, U(GOV), U(curTOV));
@@ -123,9 +123,11 @@ class torus
                 }
             }
 
-            if (i == nu-1)  lastGOV = R(tempGOV, TWO_PI * -GAngleDiff, U(GOV), U(curTOV));
+            if (i == nu-1)  lastGOV = R(tempGOV, GAngleDiff, U(GOV), U(curTOV));
 
         }
+
+
     }
 
     vec getLastGOV() {
@@ -137,8 +139,6 @@ class torus
     //Rendering Methods
     void drawTorus()
     {
-        
-        calculateVertices();
         
         noStroke();
         if (showMainTorus)
@@ -224,15 +224,18 @@ class torus
         popMatrix();
     }
 
-    void changeGStartAngle(float inc) {
+    void changeGEndAngle(float inc) {
         GEndAngle = inc;
+        PStartAngle = 0.25*TWO_PI + inc;
+        PEndAngle = 0.25*TWO_PI + inc;
     }
-    void changePStartAngle(float inc) {
-        PEndAngle = 0.25 + inc;
+    void changePEndAngle(float inc) {
+        PEndAngle -= inc;
     }
-    void changeTwistStartAngle(float inc){
-        changeGStartAngle(inc);
-        changePStartAngle(inc);
+    void changeTwistEndAngle(float inc){
+        changeGEndAngle(inc);
+        changePEndAngle(inc);
+        calculateVertices();
         // initialGOV = R(initialGOV, TWO_PI * inc, U(GOV), U(TOV));
     }
 
@@ -244,15 +247,15 @@ class torus
             {
                 GStartAngle += alpha;
                 GEndAngle += alpha;
-                G = P(P(O, TOV), R(GOV, TWO_PI * GStartAngle, U(GOV), U(TOV)));
+                G = P(P(O, TOV), R(GOV, GStartAngle, U(GOV), U(TOV)));
                 initialGOV = R(initialGOV, TWO_PI * alpha, U(GOV), U(TOV));
-                P = P(P(O, TOV), R(GOV, TWO_PI * (GStartAngle + PStartAngle), U(GOV), U(TOV)));
+                P = P(P(O, TOV), R(GOV, (GStartAngle + PStartAngle), U(GOV), U(TOV)));
             }
             else if (curpp == 1)
             {
                 PStartAngle += alpha;
                 PEndAngle += alpha;
-                P = P(P(O, TOV), R(GOV, TWO_PI * (GStartAngle + PStartAngle), U(GOV), U(TOV)));
+                P = P(P(O, TOV), R(GOV, (GStartAngle + PStartAngle), U(GOV), U(TOV)));
             }
             
         }
@@ -261,15 +264,17 @@ class torus
             if (curpp == 0)
             {
                 GStartAngle += alpha;
-                G = P(P(O, TOV), R(GOV, TWO_PI * GStartAngle, U(GOV), U(TOV)));
-                P = P(P(O, TOV), R(GOV, TWO_PI * (GStartAngle + PStartAngle), U(GOV), U(TOV)));
+                G = P(P(O, TOV), R(GOV, GStartAngle, U(GOV), U(TOV)));
+                initialGOV = R(initialGOV, TWO_PI * alpha, U(GOV), U(TOV));
+                P = P(P(O, TOV), R(GOV, (GStartAngle + PStartAngle), U(GOV), U(TOV)));
             }
             else if (curpp == 1)
             {
                 PStartAngle += alpha;
-                P = P(P(O, TOV), R(GOV, TWO_PI * (GStartAngle + PStartAngle), U(GOV), U(TOV)));
+                P = P(P(O, TOV), R(GOV, (GStartAngle + PStartAngle), U(GOV), U(TOV)));
             }
         }
+        calculateVertices();
     }
 
     void SETppToIDofVertexWithClosestScreenProjectionTo(pt M)  // sets pp to the index of the vertex that projects closest to the mouse 
@@ -312,6 +317,8 @@ public void drawToruses(biarc[] biarcs, torus[] toruses, pts P_)
     int vertexQuantity = P_.nv;
     vec currGOV = V(100, U(biarcs[0].axises[0]));
     //Calculate angle difference
+
+    float[] totalAngle = new float[vertexQuantity * 2];
     for (int i = 0; i < vertexQuantity; i++)
     {
         pt[] Os = biarcs[i].centrics;
@@ -320,16 +327,28 @@ public void drawToruses(biarc[] biarcs, torus[] toruses, pts P_)
         float[] Es = biarcs[i].angles;
         // toruses[2*i].drawSphere(Os[0], 20);
         // V(100, U(Xaxies[0]))
+        totalAngle[2*i] -= angle(currGOV, V(100, U(Xaxies[0])));
         toruses[2*i].updateTorus(Os[0], Xaxies[0], TOVs[0], currGOV, V(100, U(Xaxies[0])), Es[0], demoTorusnv, demoTorusnu, demoTorusunv);
         currGOV = toruses[2*i].getLastGOV();
+        totalAngle[2*i] += angle(currGOV, V(100, U(Xaxies[0])));
+
+        totalAngle[2*i+1] -= angle(currGOV, V(100, U(Xaxies[0])));
         toruses[2*i+1].updateTorus(Os[1], Xaxies[1], TOVs[1], currGOV, V(100, U(Xaxies[1])), Es[1], demoTorusnv, demoTorusnu, demoTorusunv);
         currGOV = toruses[2*i+1].getLastGOV();
+        totalAngle[2*i+1] += angle(currGOV, V(100, U(Xaxies[0])));
     }
-    float diffAngle = -angle(U(V(100, U(biarcs[0].axises[0]))), U(currGOV));
-    if (vertexQuantity == 3) diffAngle = 0;
+
+    // println(n(U(V(100, U(biarcs[0].axises[0])))));
+    // println(n(U(currGOV)));
+
+    float diffAngle = angle(V(100, U(biarcs[0].axises[0])), currGOV);
+
+
+    // if (vertexQuantity == 3) diffAngle = 0;
     println("a:" + diffAngle);
+    println(diffAngle / (vertexQuantity * 2));
     currGOV = V(100, U(biarcs[0].axises[0]));
-    if (diffAngle != 0 && fonce)
+    if (diffAngle > 0.01)
     {
         for (int i = 0; i < vertexQuantity; i++) 
         {
@@ -337,17 +356,23 @@ public void drawToruses(biarc[] biarcs, torus[] toruses, pts P_)
             vec[] Xaxies = biarcs[i].axises;
             vec[] TOVs = biarcs[i].tovs;
             float[] Es = biarcs[i].angles;
-            
-            toruses[2*i].changeTwistStartAngle(-diffAngle / vertexQuantity / 2);
+            toruses[2*i].changeGEndAngle(diffAngle / (vertexQuantity * 2));
+            toruses[2*i].updateTorus(Os[0], Xaxies[0], TOVs[0], currGOV, V(100, U(Xaxies[0])), Es[0], demoTorusnv, demoTorusnu, demoTorusunv);
             currGOV = toruses[2*i].getLastGOV();
-            toruses[2*i+1].changeTwistStartAngle(-diffAngle / vertexQuantity / 2);
+            toruses[2*i+1].changeGEndAngle(diffAngle / (vertexQuantity * 2));
+            toruses[2*i+1].updateTorus(Os[1], Xaxies[1], TOVs[1], currGOV, V(100, U(Xaxies[1])), Es[1], demoTorusnv, demoTorusnu, demoTorusunv);
             currGOV = toruses[2*i+1].getLastGOV();
         }
-
-        fonce = false;
+        twistCnt += 1;
     }
-    diffAngle = angle(U(V(100, U(biarcs[0].axises[0]))), U(currGOV));
-    if (vertexQuantity == 3) diffAngle = 0;
+    else
+    { 
+        println("initialTwist: " + initialDiff);
+        println("twistCnt: " + twistCnt);
+    };
+    diffAngle = angle(V(100, U(biarcs[0].axises[0])), currGOV);
+    // if (vertexQuantity == 3 ) diffAngle = 0;
+
     println("b: " + diffAngle);
 
     //Rendering Toruses
@@ -358,5 +383,5 @@ public void drawToruses(biarc[] biarcs, torus[] toruses, pts P_)
     }
 }
 
-boolean fonce = true;
+
 //torus(pt O, vec XAxis, vec TOV, vec GOV, float e, int nv, int nu, int unv)

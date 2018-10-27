@@ -113,6 +113,14 @@ void mouseDragged()
       else F.add(ToK(V((float)(mouseX-pmouseX),(float)(mouseY-pmouseY),0))); 
       }
     change=true;
+    twistCnt = 0;
+    flg = true;
+    for (int i = 0; i < P.nv; i++)
+    {
+      demoTorus[i].GEndAngle = 0;
+      demoTorus[i].PStartAngle = 2.5*TWO_PI;
+      demoTorus[i].PEndAngle = 2.5*TWO_PI;
+    }
    }
    else if (showTorus)
    {

@@ -41,6 +41,10 @@ int demoTorusnv = 4,
 biarc[] demoBiarc = new biarc[50];
 torus[] demoTorus = new torus[100];
 
+int twistCnt = 0;
+float initialDiff = 0;
+boolean flg = true;
+
 
 //torus demo
 pt Origin = new pt(0,0,300);
