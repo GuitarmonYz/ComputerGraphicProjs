@@ -330,7 +330,6 @@ public void drawToruses(biarc[] biarcs, torus[] toruses, pts P_)
     vec currGOV = V(100, U(biarcs[0].axises[0]));
     //Calculate angle difference
 
-    float[] totalAngle = new float[vertexQuantity * 2];
     for (int i = 0; i < vertexQuantity; i++)
     {
         pt[] Os = biarcs[i].centrics;
@@ -341,15 +340,14 @@ public void drawToruses(biarc[] biarcs, torus[] toruses, pts P_)
         toruses[2*i+1].GEndAngle = 0;
         // toruses[2*i].drawSphere(Os[0], 20);
         // V(100, U(Xaxies[0]))
-        totalAngle[2*i] -= angle(currGOV, V(100, U(Xaxies[0])));
+        
         toruses[2*i].updateTorus(Os[0], Xaxies[0], TOVs[0], currGOV, V(100, U(Xaxies[0])), Es[0], demoTorusnv, demoTorusnu, demoTorusunv);
         currGOV = toruses[2*i].getLastGOV();
-        totalAngle[2*i] += angle(currGOV, V(100, U(Xaxies[0])));
-
-        totalAngle[2*i+1] -= angle(currGOV, V(100, U(Xaxies[0])));
+        
+        
         toruses[2*i+1].updateTorus(Os[1], Xaxies[1], TOVs[1], currGOV, V(100, U(Xaxies[1])), Es[1], demoTorusnv, demoTorusnu, demoTorusunv);
         currGOV = toruses[2*i+1].getLastGOV();
-        totalAngle[2*i+1] += angle(currGOV, V(100, U(Xaxies[0])));
+        
     }
 
     // println(n(U(V(100, U(biarcs[0].axises[0])))));
@@ -367,7 +365,6 @@ public void drawToruses(biarc[] biarcs, torus[] toruses, pts P_)
     // println(diffAngle / (vertexQuantity * 2));
     currGOV = V(100, U(biarcs[0].axises[0]));
     if (abs(diffAngle) > 0.01)
-    // if (keyPressed && keyPressed == 'o')
     {
         for (int i = 0; i < vertexQuantity; i++) 
         {
@@ -375,24 +372,23 @@ public void drawToruses(biarc[] biarcs, torus[] toruses, pts P_)
             vec[] Xaxies = biarcs[i].axises;
             vec[] TOVs = biarcs[i].tovs;
             float[] Es = biarcs[i].angles;
-            // toruses[2*i].changeGEndAngle(diffAngle / (vertexQuantity * 2));
-            // toruses[2*i].updateTorus(Os[0], Xaxies[0], TOVs[0], currGOV, V(100, U(Xaxies[0])), Es[0], demoTorusnv, demoTorusnu, demoTorusunv);
+            toruses[2*i].changeGEndAngle(diffAngle / (vertexQuantity * 2));
+            println(diffAngle / vertexQuantity);
+            toruses[2*i].updateTorus(Os[0], Xaxies[0], TOVs[0], currGOV, V(100, U(Xaxies[0])), Es[0], demoTorusnv, demoTorusnu, demoTorusunv);
             currGOV = toruses[2*i].getLastGOV();
-            // toruses[2*i+1].changeGEndAngle(diffAngle / (vertexQuantity * 2));
-            if (2 * i + 1 != vertexQuantity*2-1) {
-                // toruses[2*i+1].updateTorus(Os[1], Xaxies[1], TOVs[1], currGOV, V(100, U(Xaxies[1])), Es[1], demoTorusnv, demoTorusnu, demoTorusunv);
-                currGOV = toruses[2*i+1].getLastGOV();
-            }
+            toruses[2*i+1].changeGEndAngle(diffAngle / (vertexQuantity * 2));
+            toruses[2*i+1].updateTorus(Os[1], Xaxies[1], TOVs[1], currGOV, V(100, U(Xaxies[1])), Es[1], demoTorusnv, demoTorusnu, demoTorusunv);
+            currGOV = toruses[2*i+1].getLastGOV();
             
         }
         // twistCnt += 1;
-        pt[] Os = biarcs[vertexQuantity-1].centrics;
-        vec[] Xaxies = biarcs[vertexQuantity-1].axises;
-        vec[] TOVs = biarcs[vertexQuantity-1].tovs;
-        float[] Es = biarcs[vertexQuantity-1].angles;
-        toruses[vertexQuantity*2-1].changeGEndAngle(diffAngle);
-        toruses[vertexQuantity*2-1].updateTorus(Os[1], Xaxies[1], TOVs[1], currGOV, V(100, U(Xaxies[1])), Es[1], demoTorusnv, demoTorusnu, demoTorusunv);
-        currGOV = toruses[2*vertexQuantity-1].getLastGOV();
+        // pt[] Os = biarcs[vertexQuantity-1].centrics;
+        // vec[] Xaxies = biarcs[vertexQuantity-1].axises;
+        // vec[] TOVs = biarcs[vertexQuantity-1].tovs;
+        // float[] Es = biarcs[vertexQuantity-1].angles;
+        // toruses[vertexQuantity*2-1].changeGEndAngle(diffAngle);
+        // toruses[vertexQuantity*2-1].updateTorus(Os[1], Xaxies[1], TOVs[1], currGOV, V(100, U(Xaxies[1])), Es[1], demoTorusnv, demoTorusnu, demoTorusunv);
+        // currGOV = toruses[2*vertexQuantity-1].getLastGOV();
         // println(toruses[vertexQuantity*2-1].GEndAngle - toruses[vertexQuantity*2-1].GStartAngle);
     }
     // else
@@ -419,7 +415,7 @@ public void updateAngle(biarc[] biarcs, torus[] toruses, pts P_)
     vec currGOV = V(100, U(biarcs[0].axises[0]));
     //Calculate angle difference
 
-    float[] totalAngle = new float[vertexQuantity * 2];
+    
     for (int i = 0; i < vertexQuantity; i++)
     {
         pt[] Os = biarcs[i].centrics;
@@ -430,15 +426,14 @@ public void updateAngle(biarc[] biarcs, torus[] toruses, pts P_)
         toruses[2*i+1].GEndAngle = 0;
         // toruses[2*i].drawSphere(Os[0], 20);
         // V(100, U(Xaxies[0]))
-        totalAngle[2*i] -= angle(currGOV, V(100, U(Xaxies[0])));
+        
         toruses[2*i].updateTorus(Os[0], Xaxies[0], TOVs[0], currGOV, V(100, U(Xaxies[0])), Es[0], demoTorusnv, demoTorusnu, demoTorusunv);
         currGOV = toruses[2*i].getLastGOV();
-        // totalAngle[2*i] += angle(currGOV, V(100, U(Xaxies[0])));
+        
 
-        totalAngle[2*i+1] -= angle(currGOV, V(100, U(Xaxies[0])));
+        
         toruses[2*i+1].updateTorus(Os[1], Xaxies[1], TOVs[1], currGOV, V(100, U(Xaxies[1])), Es[1], demoTorusnv, demoTorusnu, demoTorusunv);
         currGOV = toruses[2*i+1].getLastGOV();
-        // totalAngle[2*i+1] += angle(currGOV, V(100, U(Xaxies[0])));
     }
 
     // println(n(U(V(100, U(biarcs[0].axises[0])))));
