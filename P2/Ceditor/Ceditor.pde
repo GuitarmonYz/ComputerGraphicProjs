@@ -151,10 +151,7 @@ void draw() {
   textSize(14);
   strokeWeight(1);
   popMatrix(); // done with 3D drawing. Restore front view for writing text on canvas
-  
 
-  
-  
   //hint(DISABLE_DEPTH_TEST); // no z-buffer test to ensure that help text is visible
   //  if(method==4) scribeHeader("Quintic UBS",2);
   //  if(method==3) scribeHeader("Cubic UBS",2);

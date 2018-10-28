@@ -193,6 +193,19 @@ public vec getTangentByCircle(pt A, pt B, pt C, pt target, float[] r_norm) {
     return U(cross(n, V(target, o)));
 }
 
+public vec[] getTangentsByCircle(pts P_) {
+    pt[] vertices = P_.G;
+    int num_vertices = P_.nv;
+    vec[] tangents = new vec[num_vertices];
+    float[] r = new float[]{0};
+    for (int i = 1; i < num_vertices-1; i++) {
+        tangents[i] = getTangentByCircle(vertices[i-1], vertices[i], vertices[i+1], vertices[i], r);
+    }
+    tangents[0] = getTangentByCircle(vertices[num_vertices-1], vertices[0], vertices[1], vertices[0], r);
+    tangents[num_vertices-1] = getTangentByCircle(vertices[num_vertices-2], vertices[num_vertices-1], vertices[0], vertices[num_vertices-1], r);
+    return tangents;
+}
+
 public vec[] getTangentsByThreeCircle(pts P_) {
     pt[] vertices = P_.G;
     int num_vertices = P_.nv;
@@ -232,7 +245,7 @@ public void drawBiarcs(biarc[] biarcs, pts P_) {
     if (P_.nv < 5) {
         tangents = getTangents(P_);
     } else {
-        tangents = getTangentsByThreeCircle(P_);
+        tangents = getTangentsByCircle(P_);
     }
     // vec[] tangents = getTangents(P_);
     pt[] vertices = P_.G;
