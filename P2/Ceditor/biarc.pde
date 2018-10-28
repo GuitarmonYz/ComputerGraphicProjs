@@ -183,6 +183,14 @@ public vec[] getTangents(pts P_) {
     return tangents;
 }
 
+public vec[] getTangentsFromNeville(pts P_) {
+    vec[] tangents = new vec[P_.nv];
+    pt[] vertices = P_.G;
+    for (int i = 1; i < P_.nv-1; i++) {
+        tangents[i] = U(V(vertices[i-1], vertices[i+1]));
+    }
+}
+
 public void drawBiarcs(biarc[] biarcs, pts P_) {
     vec[] tangents = getTangents(P_);
     pt[] vertices = P_.G;
