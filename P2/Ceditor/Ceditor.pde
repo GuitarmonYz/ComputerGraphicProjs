@@ -20,7 +20,8 @@ Boolean
   
   showTorus = false,
   showEditorDemo = true,
-  showBiarc = false;
+  showBiarc = false,
+  showTangent = false;
 
 //CEditor Demo
 float 
@@ -58,6 +59,9 @@ biarc Biarc;
 boolean biarcPickLock = false;
 int pick_point = -1;
 
+//tangents demo
+pts P_T = new pts();
+
 void setup() {
   myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
   textureMode(NORMAL);          
@@ -72,7 +76,8 @@ void setup() {
     demoTorus[i] = new torus();
   }
   drawToruses(demoBiarc, demoTorus, P);
-  
+  P_T.declare();
+  P_T.loadPts("data/pts3");
   //TorusDemo Setup
   TorusDemo = new torus(Origin, XAxis, new vec(0,0,200), TorusDemo_GOV, TorusDemo_GOV, 0.4, 40, 100, 4);
   if (showTorus) F.setTo(Origin);
@@ -137,6 +142,23 @@ void draw() {
     Biarc.updateNearestPoint();
     arrow(biarcPoints[0], biarcPoints[2], 15);
     arrow(biarcPoints[1], biarcPoints[3], 15);
+  }
+
+  if (showTangent) {
+    // float[] r = new float[]{0};
+    // vec tangent = getTangentByCircle(P.G[0], P.G[1], P.G[2], P.G[1], r);
+    // arrow(P.G[1], P(P.G[1], V(40,tangent)), 15);
+    // sphere(P.G[0], 10);
+    // sphere(P.G[1], 10);
+    // sphere(P.G[2], 10);
+    
+    vec[] tangents = getTangentsByThreeCircle(P_T);
+    stroke(red);
+    for (int i = 0; i < tangents.length; i++) {
+      arrow(P_T.G[i], P(P_T.G[i], V(40,tangents[i])), 15);
+      sphere(P_T.G[i], 10);
+    }
+    
   }
 
   //if(animating)  
