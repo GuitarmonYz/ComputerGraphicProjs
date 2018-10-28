@@ -87,7 +87,7 @@ void setup() {
   {
     demoTorus[i] = new torus();
   }
-  drawToruses(demoBiarc, demoTorus, P);
+  drawToruses(demoTorus, P);
   P_T.declare();
   P_T.loadPts("data/pts3");
   //TorusDemo Setup
