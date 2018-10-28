@@ -105,15 +105,6 @@ void mousePressed()
      biarcPickLock = false;
      println("pressed");
    }
-   else if (showTangent) {
-     if (!keyPressed) picking=true;
-    if (!keyPressed) {P_T.set_pv_to_pp(); println("picked vertex "+P_T.pp);}
-    if (keyPressed && key=='a') {P_T.addPt(Of);}
-  //  if(keyPressed && (key=='f' || key=='s' || key=='b' || key=='c')) {P.addPt(Of,key);}
-  
-   // if (!keyPressed) P.setPicked();
-    change=true;
-   }
    
   }
   
