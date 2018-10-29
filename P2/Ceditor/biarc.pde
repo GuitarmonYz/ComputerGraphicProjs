@@ -210,15 +210,7 @@ public vec[] getTangentsByThreeCircle(pts P_) {
     pt[] vertices = P_.G;
     int num_vertices = P_.nv;
     vec[] tangents = new vec[num_vertices];
-    // float[] r_ = new float[]{0};
-    // float r_1, r_2, r_3;
     for (int i = 2; i < num_vertices-2; i++) {
-        // vec tangent_1 = getTangentByCircle(vertices[i-2], vertices[i-1], vertices[i], vertices[i], r_);
-        // r_1 = r_[0];
-        // vec tangent_2 = getTangentByCircle(vertices[i-1], vertices[i], vertices[i+1], vertices[i], r_);
-        // r_2 = r_[0];
-        // vec tangent_3 = getTangentByCircle(vertices[i], vertices[i+1], vertices[i+2], vertices[i], r_);
-        // r_3 = r_[0];
         tangents[i] = getTangentsByThreeCircleHelper(vertices[i-2], vertices[i-1], vertices[i], vertices[i+1], vertices[i+2]); 
     }
     tangents[num_vertices-2] = getTangentsByThreeCircleHelper(vertices[num_vertices-4], vertices[num_vertices-3], vertices[num_vertices-2], vertices[num_vertices-1], vertices[0]);
