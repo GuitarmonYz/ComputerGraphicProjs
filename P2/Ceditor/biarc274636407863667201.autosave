@@ -217,6 +217,9 @@ public vec[] getTangentsByThreeCircle(pts P_) {
     tangents[num_vertices-1] = getTangentsByThreeCircleHelper(vertices[num_vertices-3], vertices[num_vertices-2], vertices[num_vertices-1], vertices[0], vertices[1]);  
     tangents[0] = getTangentsByThreeCircleHelper(vertices[num_vertices-2], vertices[num_vertices-1], vertices[0], vertices[1], vertices[2]);
     tangents[1] = getTangentsByThreeCircleHelper(vertices[num_vertices-1], vertices[0], vertices[1], vertices[2], vertices[3]);   
+    for (int i = 0; i < num_vertices; i++) {
+        arrow(vertices[i], P(40, P(vertices[i], tangents[i])), 15);
+    }
     return tangents;
 }
 
@@ -229,30 +232,17 @@ public vec getTangentsByThreeCircleHelper(pt A, pt B, pt C, pt D, pt E) {
     r_2 = r_[0];
     vec tangent_3 = getTangentByCircle(C, D, E, C, r_);
     r_3 = r_[0];
-    // return U(A(A(tangent_1, tangent_2), tangent_3));
-    return U(V(1/(r_1 + r_2 + r_3), A(A(V(r_1, tangent_1), V(r_2, tangent_2)), V(r_3, tangent_3)))); 
-}
-
-public void drawTangents(pts P_, vec[] tangents) {
-    pt[] vertices = P_.G;
-    stroke(black);
-    for (int i = 0; i < P_.nv; i++) {
-        arrow(vertices[i], P(vertices[i], V(80, tangents[i])), 15);
-    }
+    return U(A(A(tangent_1, tangent_2), tangent_3));
+    // return U(V(1/(r_1 + r_2 + r_3), A(A(V(r_1, tangent_1), V(r_2, tangent_2)), V(r_3, tangent_3)))); 
 }
 
 public void drawBiarcs(biarc[] biarcs, pts P_) {
     vec[] tangents;
-    if (tangent_method == 0) {
+    if (P_.nv < 5) {
         tangents = getTangents(P_);
-    } else if (tangent_method == 1) {
-        tangents = getTangentsByCircle(P_);
-    } else if (tangent_method ==2) {
-        tangents = getTangentsByThreeCircle(P_);
     } else {
-        tangents = new vec[P_.nv];
+        tangents = getTangentsByThreeCircle(P_);
     }
-    drawTangents(P_, tangents);
     // vec[] tangents = getTangents(P_);
     pt[] vertices = P_.G;
     for (int i = 0; i < P_.nv-1; i++) {

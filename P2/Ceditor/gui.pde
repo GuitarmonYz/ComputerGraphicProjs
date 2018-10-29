@@ -7,6 +7,13 @@ void keyPressed()
   if(key==']') showBalls=!showBalls;
   if(key=='f') {P.setPicekdLabel(key);}
   if(key=='s') {P.setPicekdLabel(key);}
+  if(key=='g') {
+    tangent_method += 1;
+    tangent_method = tangent_method % 3;
+    if (tangent_method == 2 && P.nv < 5) {
+      tangent_method = 0;
+    }
+  }
   // if(key=='b') {P.setPicekdLabel(key);}
   if(key=='c') {P.setPicekdLabel(key);}
   if(key=='F') {P.addPt(Of,'f');}
@@ -304,7 +311,9 @@ String  title1 = "PCC/Thread Demo",
         threadCtrl2 = "Thread Control: +/-:inc/dec thread #",
 
         ctrlpt31 = "vh&drag: change direction of vector if clicked on arrow",
-        ctrlpt32 = "                 change location of vector if clicked on arrow base";
+        ctrlpt32 = "                 change location of vector if clicked on arrow base",
+
+        tangentInfo = "Change tangent approxiamtion methods: g: change methods (three circle only affective when num_points > 5)";
 
 
 

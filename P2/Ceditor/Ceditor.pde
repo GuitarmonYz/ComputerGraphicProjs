@@ -31,6 +31,7 @@ float
         t=0, 
         s=0;
 int     
+        tangent_method = 0,
         f=0, 
         maxf=2*30, 
         level=4, 
