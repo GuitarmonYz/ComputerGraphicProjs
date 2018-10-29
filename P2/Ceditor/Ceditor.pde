@@ -39,8 +39,6 @@ String SDA = "angle";
 float defectAngle=0;
 pt OriginP = P(100,100,0);
 pts P = new pts(); // polyloop in 3D
-//pts Q = new pts(); // second polyloop in 3D
-//pts R = new pts(); // inbetweening polyloop L(P,t,Q);
 int     demoTorusnv = 20,
         demoTorusnu = 40,
         demoTorusunv = 12;
@@ -67,7 +65,10 @@ boolean biarcPickLock = false;
 int pick_point = -1;
 
 void setup() {
-  myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
+  s1Face = loadImage("data/s1.jpg");
+  s2Face = loadImage("data/s2.jpg");
+  s3Face = loadImage("data/s3.jpg");
+
   textureMode(NORMAL);          
   size(1000, 1000, P3D); // P3D means that we will do 3D graphics
   if (showPCC) F.setTo(OriginP);
@@ -99,7 +100,6 @@ void setup() {
 
 void draw() {
   background(255);
-  //hint(ENABLE_DEPTH_TEST); 
   pushMatrix();   // to ensure that we can restore the standard view before writing on the canvas
   setView();  // see pick tab
   showFloor(); // draws dance floor as yellow mat
@@ -109,13 +109,9 @@ void draw() {
   {
     P.SETppToIDofVertexWithClosestScreenProjectionTo(Mouse()); // for picking (does not set P.pv)
     if(showControlInMainDemo) {fill(grey); P.drawClosedCurve(10);}  // draw control polygon 
-    // fill(yellow,100); P.showPicked(); 
 
     drawBiarcs(demoBiarc, P);
-    if (change)
-    {
-      updateToruses(demoBiarc, demoTorus, P);
-    }
+    if (change) updateToruses(demoBiarc, demoTorus, P);
     drawToruses(demoTorus, P);
   }
   
@@ -135,36 +131,14 @@ void draw() {
     fill(green);
     arrow(biarcPoints[1], biarcPoints[3], 15);
   }
-  //if(animating)  
-  //  {
-  //  f++; // advance frame counter
-  //  if (f>maxf) // if end of step
-  //    {
-  //    P.next();     // advance dv in P to next vertex
- ////     animating=true;  
-  //    f=0;
-  //    }
-  //  }
-  //t=(1.-cos(PI*f/maxf))/2; //t=(float)f/maxf;
 
-  //if(track) F=_LookAtPt.move(X(t)); // lookAt point tracks point X(t) filtering for smooth camera motion (press'.' to activate)
   textSize(14);
   strokeWeight(1);
   popMatrix(); // done with 3D drawing. Restore front view for writing text on canvas
 
-  //hint(DISABLE_DEPTH_TEST); // no z-buffer test to ensure that help text is visible
-  //  if(method==4) scribeHeader("Quintic UBS",2);
-  //  if(method==3) scribeHeader("Cubic UBS",2);
-  //  if(method==2) scribeHeader("Jarek J-spline",2);
-  //  if(method==1) scribeHeader("Four Points",2);
-  //  if(method==0) scribeHeader("Quadratic UBS",2);
-
-  // used for demos to show red circle when mouse/key is pressed and what key (disk may be hidden by the 3D model)
   if(mousePressed) {stroke(cyan); strokeWeight(3); noFill(); ellipse(mouseX,mouseY,20,20); strokeWeight(1);}
   if(keyPressed) {stroke(red); fill(white); ellipse(mouseX+14,mouseY+20,26,26); fill(red); text(key,mouseX-5+14,mouseY+4+20); strokeWeight(1); }
   if(scribeText) {fill(black); displayHeader();} // dispalys header on canvas, including my face
   displayFooter(); // shows menu at bottom, only if not filming
-  //if(filming && (animating || change)) saveFrame("FRAMES/F"+nf(frameCounter++,4)+".tif");  // save next frame to make a movie
   change=false; // to avoid capturing frames when nothing happens (change is set uppn action)
-  //change=true;
   }

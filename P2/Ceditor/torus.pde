@@ -8,7 +8,7 @@ class torus
             nu = 0,
             pp = 0,
             curpp = 0,
-            nRope = 4,
+            nRope = 1,
             torusIdx = 0;
             
     float   e = 0.5,
@@ -24,7 +24,7 @@ class torus
     boolean showMainTorus = true;
     boolean showFirstControlTorus = true;
 
-    color[] threadColors = {green, red, blue, yellow, cyan, magenta, grey, green, brown, metal};
+    color[] threadColors = {red, green, blue, yellow, cyan, magenta, grey, green, brown, metal};
 
     pt[][] Vtx = new pt [maxnVtx][maxnVtx];  
     pt[][][] UPathVtx = new pt [maxnRope][maxnVtx][maxnVtx];
@@ -227,7 +227,7 @@ class torus
 
         if (nRope != 0)
         {
-            fill(green);
+            fill(red);
             drawSphere(P, r);
             text("P", P.x, P.y, P.z);
         }

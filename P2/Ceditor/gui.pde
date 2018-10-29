@@ -239,15 +239,73 @@ void mouseDragged()
 // **** Header, footer, help text on canvas
 void displayHeader()  // Displays title and authors face on screen
     {
-      scribeHeader(title,0); scribeHeaderRight(name); 
-      fill(white); image(myFace, width-myFace.width/2,25,myFace.width/2,myFace.height/2); 
+      textSize(14);
+      if (showPCC) scribeHeader(title1,0);
+      else if (showTorus) scribeHeader(title2,0);
+      else if (showBiarc) scribeHeader(title3,0);
+      scribeHeaderRight(name1, 2); 
+      fill(white); image(s1Face, width-s1Face.width/2 - 190, 25, s1Face.width/2,s1Face.height/2); 
+      scribeHeaderRight(name2, 1); 
+      fill(white); image(s2Face, width-s2Face.width/2 - 100, 25, s2Face.width/2,s2Face.height/2); 
+      scribeHeaderRight(name3, 0); 
+      fill(white); image(s3Face, width-s3Face.width/2 - 10, 25, s3Face.width/2,s3Face.height/2); 
     }
 void displayFooter()  // Displays help text at the bottom
-    {
-      scribeFooter(guide,1); 
-      scribeFooter(menu,0); 
+    { 
+      noStroke();
+      
+      if (showPCC)
+      {
+        scribeFooter(demoSw, 0, blue); 
+        scribeFooter(viewpt, 1, blue); 
+        scribeFooter(showCtrl, 3, dgreen);
+        scribeFooter(ctrlpt, 4, brown); 
+        scribeFooter(threadCtrl, 5, red); 
+      }
+      else if (showTorus)
+      {
+        scribeFooter(demoSw, 0, blue); 
+        scribeFooter(viewpt, 1, blue); 
+        scribeFooter(showCtrl2, 3, dgreen);
+        scribeFooter(ctrlpt21, 4, dgreen);
+        scribeFooter(ctrlpt22, 5, dgreen); 
+        scribeFooter(ctrlpt23, 6, dgreen); 
+        scribeFooter(threadCtrl2, 7, red); 
+      }
+      else if (showBiarc)
+      {
+        scribeFooter(demoSw, 0, blue); 
+        scribeFooter(viewpt, 1, blue); 
+        scribeFooter(ctrlpt31, 3, dgreen);
+        scribeFooter(ctrlpt32, 4, dgreen);
+      }
+
     }
 
-String title ="3D curve editor", name ="Jarek Rossignac",
-       menu="?:help, !:picture, ~:(start/stop)capture, space:rotate, `/wheel:closer, t/T:target, a:anim, #:quit",
-       guide="click&drag:pick&slide on floor, xz/XZ:move/ALL, e:exchange, q/p:copy, l/L:load, w/W:write, m:subdivide method"; // user's guide
+String  title1 = "PCC/Thread Demo", 
+        title2 = "Torus Demo",
+        title3 = "Biarc Demo",
+
+        name1 = "Zhao Yan", 
+        name2 = " Cong Du", 
+        name3 = "Hanyu Liu", 
+
+        demoSw = "Demo Switching Control: 1:PCC/Thread Demo, 2:Torus Demo, 3:Biarc Demo",
+        viewpt = "Viewpoint Control: space:rotate, `/wheel:closer, t:move horizontally",
+
+        showCtrl = "Show Control: b:show/hide Control Pts, n:show/hide Biarcs, m:showHide Main Torus",
+        ctrlpt = "Control Points: click&drag:pick&slide on floor, vh/VH:move/ALL, a:add point",
+        threadCtrl = "Thread Control: p&drag:twist threads, +/-:inc/dec thread #",
+
+        ctrlpt21 = "Control Points: drag red/blue points:move control Pt G/P clockwise/counter-clockwise",
+        ctrlpt22 = "                          p&drag: move control Pt P to twist the threads",
+        ctrlpt23 = "                          s&drag: move control Pt G to twist the main Torus",
+        showCtrl2 = "Show Control: m:showHide Main Torus",
+        threadCtrl2 = "Thread Control: +/-:inc/dec thread #",
+
+        ctrlpt31 = "vh&drag: change direction of vector if clicked on arrow",
+        ctrlpt32 = "                 change location of vector if clicked on arrow base";
+
+
+
+        

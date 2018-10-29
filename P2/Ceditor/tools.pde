@@ -1,7 +1,7 @@
 // ************************************ IMAGES & VIDEO 
 int pictureCounter=0, frameCounter=0;
 Boolean filming=false, change=false;
-PImage myFace; // picture of author's face, should be: data/pic.jpg in sketch folder
+PImage s1Face, s2Face, s3Face; // picture of author's face, should be: data/pic.jpg in sketch folder
 void snapPicture() {saveFrame("PICTURES/P"+nf(pictureCounter++,3)+".jpg"); }
 
 // ******************************************COLORS 
@@ -16,8 +16,13 @@ void pen(color c, float w) {stroke(c); strokeWeight(w);}
 Boolean scribeText=true; // toggle for displaying of help text
 void scribe(String S, float x, float y) {fill(0); text(S,x,y); noFill();} // writes on screen at (x,y) with current fill color
 void scribeHeader(String S, int i) {fill(0); text(S,10,20+i*20); noFill();} // writes black at line i
-void scribeHeaderRight(String S) {fill(0); text(S,width-7.5*S.length(),20); noFill();} // writes black on screen top, right-aligned
-void scribeFooter(String S, int i) {fill(0); text(S,10,40 + i*10); noFill();} // writes black on screen at line i from bottom
+void scribeHeaderRight(String S, int i) {fill(0); text(S,width - (i+1)*90 + 10, 20); noFill();} // writes black on screen top, right-aligned
+void scribeFooter(String S, int i, color c) 
+{
+  fill(c); 
+  text(S,10,45 + i*20); 
+  noFill();
+} // writes black on screen at line i from bottom
 void scribeAtMouse(String S) {noStroke();fill(0); text(S,mouseX,mouseY); noFill();} // writes on screen near mouse
 void scribeMouseCoordinates() {noStroke();fill(black); text("("+mouseX+","+mouseY+")",mouseX+7,mouseY+25); noFill();}
 void printLoc(pt te) {println(te.x + ", " + te.y + ", " + te.z);}
