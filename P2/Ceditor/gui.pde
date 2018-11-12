@@ -14,37 +14,24 @@ void keyPressed()
       tangent_method = 0;
     }
   }
-  // if(key=='b') {P.setPicekdLabel(key);}
   if(key=='c') {P.setPicekdLabel(key);}
   if(key=='F') {P.addPt(Of,'f');}
   if(key=='S') {P.addPt(Of,'s');}
   if(key=='B') {P.addPt(Of,'b');}
   if(key=='C') {P.addPt(Of,'c');}
-  //if(key=='m') {method=(method+1)%5;}
-  
   if(key==']') {showQuads=!showQuads;}
   if(key=='{') {showCurve=!showCurve;}
   if(key=='\\') {showKeys=!showKeys;}
   if(key=='}') {showPath=!showPath;}
   if(key=='|') {showCorrectedKeys=!showCorrectedKeys;}
   if(key=='=') {showTube=!showTube;}
-  //if(key=='3') {P.resetOnCircle(3,300); Q.copyFrom(P);}
-  //if(key=='4') {P.resetOnCircle(4,400); Q.copyFrom(P);}
-  //if(key=='5') {P.resetOnCircle(5,500); Q.copyFrom(P);}
   if(key=='^') track=!track;
-  // if(key=='q') Q.copyFrom(P);
-  // if(key=='p') P.copyFrom(Q);
   if(key==',') {level=max(level-1,0); f=0;}
   if(key=='.') {level++;f=0;}
-
-  //if(key=='e') {R.copyFrom(P); P.copyFrom(Q); Q.copyFrom(R);}
-  // if(key=='d') {P.set_pv_to_pp(); P.deletePicked();}
   if (keyPressed && key=='d') {
       println("pressed p");
     }
   if(key=='i') P.insertClosestProjection(Of); // Inserts new vertex in P that is the closeset projection of O
-  //if(key=='W') {P.savePts("data/pts"); Q.savePts("data/pts2");}  // save vertices to pts2
-  //if(key=='L') {P.loadPts("data/pts"); Q.loadPts("data/pts2");}   // loads saved model
   if(key=='w') P.savePts("data/pts");   // save vertices to pts
   if(key=='l') P.loadPts("data/pts"); 
   if(key=='a') {animating=!animating; P.setFifo();}// toggle animation
@@ -267,7 +254,8 @@ void displayFooter()  // Displays help text at the bottom
         scribeFooter(viewpt, 1, blue); 
         scribeFooter(showCtrl, 3, dgreen);
         scribeFooter(ctrlpt, 4, brown); 
-        scribeFooter(threadCtrl, 5, red); 
+        scribeFooter(biarcCtrl, 5, magenta); 
+        scribeFooter(threadCtrl, 6, red); 
       }
       else if (showTorus)
       {
@@ -302,6 +290,7 @@ String  title1 = "PCC/Thread Demo",
 
         showCtrl = "Show Control: b:show/hide Control Pts, n:show/hide Biarcs, m:showHide Main Torus",
         ctrlpt = "Control Points: click&drag:pick&slide on floor, vh/VH:move/ALL, a:add point",
+        biarcCtrl = "Biarc Control: g:cycling through three approaches of calculating tangents at each vertices",
         threadCtrl = "Thread Control: p&drag:twist threads, +/-:inc/dec thread #",
 
         ctrlpt21 = "Control Points: drag red/blue points:move control Pt G/P clockwise/counter-clockwise",
@@ -311,9 +300,7 @@ String  title1 = "PCC/Thread Demo",
         threadCtrl2 = "Thread Control: +/-:inc/dec thread #",
 
         ctrlpt31 = "vh&drag: change direction of vector if clicked on arrow",
-        ctrlpt32 = "                 change location of vector if clicked on arrow base",
-
-        tangentInfo = "Change tangent approxiamtion methods: g: change methods (three circle only affective when num_points > 5)";
+        ctrlpt32 = "                 change location of vector if clicked on arrow base";
 
 
 
