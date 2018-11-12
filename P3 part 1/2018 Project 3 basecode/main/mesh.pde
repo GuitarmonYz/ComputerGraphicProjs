@@ -74,14 +74,15 @@ class MESH {
               }
             }
             if (isTri) {
-              if (cw(cross(V(G[i], G[j]), V(G[i], G[k])), V(G[i], G[j]), V(G[i], G[k]))) {
+              println(cw(V(0,0,1), V(G[i], G[j]), V(G[i], G[k])));
+              if (cw(V(0,0,1), V(G[i], G[k])), V(G[i], G[j]), V(G[i], G[k]))) {
                 addTriangle(i, j, k);
                 // println(i, j, k);
               } else {
                 addTriangle(i, k, j);
                 // println(i, k, j);
               }
-              
+              // addTriangle(i, j, k);
             }
            
          }
@@ -99,7 +100,7 @@ class MESH {
           if (V[n(i)] == V[p(j)] && V[p(i)] == V[n(j)]) {
             O[i] = j;
             found = true;
-            println(i, found);
+            // println(i, found);
             break;
           }
         }
@@ -110,10 +111,11 @@ class MESH {
     
   void showBorderEdges()  // draws all border edges of mesh
     {
+      // println("border");
       for (int i = 0; i < nc; i++) {
-        
+        // println(i, O[i]);
         if (O[i] == i){
-          showEdge(i);
+          // showEdge(i);
         }
       }
     // **02 implement; 
