@@ -154,9 +154,14 @@ class MESH {
 
   void showOpposites()
   {
+    boolean[] visited = new boolean[nc];
     for (int i = 0; i < nc; i++) {
-      pt midPoint = P(G[v(n(i))], G[v(p(i))]);
-      drawParabolaInHat(G[v(i)], midPoint, G[v(o(i))], 5);
+      if (!visited[i]) {
+        pt midPoint = P(G[v(n(i))], G[v(p(i))]);
+        drawParabolaInHat(G[v(i)], midPoint, G[v(o(i))], 5);
+        visited[i] = true;
+        visited[o(i)] = true;
+      }
     }
   }
 
