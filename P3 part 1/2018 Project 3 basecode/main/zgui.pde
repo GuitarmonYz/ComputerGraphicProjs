@@ -176,6 +176,6 @@ void displayFooter()  // Displays help text at the bottom
     scribeFooter(menu,0); 
     }
 
-String title ="Lattice Maker", name ="TEAM NAMES",
+String title ="Lattice Maker", name ="Zhao Yan",
        menu="?:help, t/T:move view, space:rotate view, `/wheel:zoom, !:picture, ~:(start/stop) filming,  #:quit",
        guide="click&drag:pick&slide, _:flip ceiling/floor, x/X:move picked/all, m/M:perturb, X:slide All, |:snap heights, l/L:load, w/W:write"; // user's guide

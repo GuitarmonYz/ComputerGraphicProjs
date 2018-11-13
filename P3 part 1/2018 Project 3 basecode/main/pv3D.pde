@@ -184,3 +184,32 @@ void drawParabolaInHat(pt A, pt B, pt C, int rec) {
      drawParabolaInHat(A,L, M,rec-1); drawParabolaInHat(M,R, C,rec-1); 
      };
    };
+
+void drawBspline(pt[] pointArray, int rec) {
+  if (rec == 0) {
+    for (int i = 1; i < pointArray.length; i++) {
+      show(pointArray[i-1], pointArray[i]);
+    }
+  } else {
+    int length_1 = 2*pointArray.length - 1;
+    pt[] new_array = new pt[length_1];
+    for (int i = 0; i < length_1; i++) {
+      if (i%2 == 0) new_array[i] = pointArray[i/2]; 
+      else new_array[i] = P(pointArray[i/2], pointArray[i/2+1]);
+    }
+    int length_2 = 2 * length_1 - 1;
+    pt[] tmp_array = new pt[length_2];
+    pt[] res = new pt[length_2 - pointArray.length];
+    int j = 0;
+    for (int i = 0; i < length_2; i++) {
+      if (i%2 == 0) tmp_array[i] = new_array[i/2];
+      else tmp_array[i] = P(new_array[i/2], new_array[i/2 + 1]);
+      if (i%4 != 0) {
+        res[j] = tmp_array[i];
+        j++;
+      }
+    }
+    drawBspline(res, rec - 1);
+  }
+
+}

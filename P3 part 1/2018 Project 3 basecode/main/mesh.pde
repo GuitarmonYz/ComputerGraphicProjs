@@ -102,6 +102,16 @@ class MESH {
       }
     // **02 implement it 
     } 
+
+  int countBorders() {
+    int count = 0;
+    for (int i = 0; i < nc; i++) {
+      if (o(i) == i) {
+        count++;
+      }
+    }
+    return count;
+  }
     
   void showBorderEdges()  // draws all border edges of mesh
     {
@@ -137,13 +147,27 @@ class MESH {
     // **03 implement it 
     }  
     
-  void smoothenInterior() { // even interior vertiex locations
-    pt[] Gn = new pt[nv];
-    for (int i = 0; i < nc; i++) {
-      
-    }
-    // **04 implement it 
-    for (int v=0; v<nv; v++) if(isInterior[v]) G[v].translateTowards(.1,Gn[v]);
+  void smoothenInterior() 
+    { // even interior vertiex locations
+      pt[] Gn = new pt[nv];
+      int[] count = new int[nv];
+      for (int i = 0; i < nv; i++) {
+        Gn[i] = P(0,0,0);
+      }
+      for (int i = 0; i < nc; i++) {
+        if (isInterior[v(i)]) {
+          Gn[v(i)].add(g(n(i)));
+          Gn[v(i)].add(g(p(i)));
+          count[v(i)]+=2;
+        }
+      }
+      for (int i = 0; i < nv; i++) {
+        if (isInterior[i]) {
+          Gn[i].div(count[i]);
+        }
+      }
+      // **04 implement it 
+      for (int v=0; v<nv; v++) if(isInterior[v]) G[v].translateTowards(.1,Gn[v]);
     }
 
 
@@ -189,9 +213,63 @@ class MESH {
 
   void showArcs() // draws arcs of quadratic B-spline of Voronoi boundary loops of interior vertices
     { 
-
+      for (int i = 0; i < nc; i++) {
+        if (isInterior[v(i)]) {
+          pt[] tmpArray = new pt[3];
+          pt c_i = triCircumcenter(i);
+          pt c_u = triCircumcenter(u(i));
+          pt c_s = triCircumcenter(s(i));
+          tmpArray[0] = c_u;
+          tmpArray[1] = c_i;
+          tmpArray[2] = c_s;
+          drawBspline(tmpArray, 4);
+          int s = s(i);
+          while (s != i) {
+            c_i = triCircumcenter(s);
+            c_u = triCircumcenter(u(s));
+            c_s = triCircumcenter(s(s));
+            tmpArray[0] = c_u;
+            tmpArray[1] = c_i;
+            tmpArray[2] = c_s;
+            drawBspline(tmpArray, 4);
+            s = s(s);
+          }
+        }
+      }
     // **06 implement it
     }               // draws arcs in triangles
+
+  void drawVoronoiFaceOfInteriorVertices() {
+    float dv = 1. / (nv - 1);
+    for (int i = 0; i < nv; i++) {
+      if (isInterior[i]) {
+        fill(dv * 255 * i, dv * 255 * (nv - i), 200);
+        drawVoronoiFaceOfInteriorVertex(i);
+      }
+    }
+  }
+
+  int cornerIndexFromVertexIndex(int v) {
+    for (int i = 0; i < nc; i++) {
+      if (v(i) == v) return i;
+    }
+    return -1;
+  }
+
+  void drawVoronoiFaceOfInteriorVertex(int v) {
+    int c_start = cornerIndexFromVertexIndex(v);
+    beginShape();
+    pt c_1 = triCircumcenter(c_start);
+    vertex(c_1);
+    int s = s(c_start);
+    while (s != c_start) {
+      pt c_2 = triCircumcenter(s);
+      vertex(c_2);
+      c_1 = c_2;
+      s = s(s);
+    }
+    endShape(CLOSE);
+  }
 
  
   pt triCenter(int c) {return P(g(c),g(n(c)),g(p(c))); }  // returns center of mass of triangle of corner c

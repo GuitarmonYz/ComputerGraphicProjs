@@ -136,7 +136,7 @@ void draw() {
  // **05 implement corner operators in Mesh
   if(step5) 
     {
-    live=false;
+    // live=false;
       fill(magenta); 
       if(showCorner) M.showCurrentCorner(20); 
       if (showOpposite) {
@@ -153,6 +153,7 @@ void draw() {
     {
       pushMatrix(); 
       translate(0,0,6); noFill(); 
+      if (showVoronoiFaces) M.drawVoronoiFaceOfInteriorVertices();
       stroke(blue); 
       if(showVoronoi) M.showVoronoiEdges(); // **06 implement it in Mesh
       stroke(red); 
@@ -192,8 +193,8 @@ void draw() {
   hint(DISABLE_DEPTH_TEST); // no z-buffer test to ensure that help text is visible
 
   int line=0;
-  scribeHeader(" Project 3 for Rossignac's 2018 Graphics Course CS3451 / CS6491 by First LAST NAME ",line++);
-  scribeHeader(P.count()+" vertices, "+M.nt+" triangles ",line++);
+  scribeHeader(" Project 3 for Rossignac's 2018 Graphics Course CS3451 / CS6491 by Zhao Yan ",line++);
+  scribeHeader(P.count()+" vertices, "+M.nt+" triangles "+M.countBorders()+" Border edges",line++);
   if(live) scribeHeader("LIVE",line++);
  
   // used for demos to show red circle when mouse/key is pressed and what key (disk may be hidden by the 3D model)
