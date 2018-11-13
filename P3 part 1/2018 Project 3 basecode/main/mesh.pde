@@ -80,7 +80,6 @@ class MESH {
                 addTriangle(i, k, j);
               }
             }
-           
          }
        }
      }
@@ -106,9 +105,7 @@ class MESH {
     
   void showBorderEdges()  // draws all border edges of mesh
     {
-      // println("border");
       for (int i = 0; i < nc; i++) {
-        // println(i, O[i]);
         if (O[i] == i){
           showEdge(i);
         }
@@ -128,6 +125,15 @@ class MESH {
     
   void classifyVertices() 
     { 
+      for (int i = 0; i < nv; i++) {
+        isInterior[i] = true;
+      }
+      for (int i = 0; i < nc; i++) {
+        if (O[i] == i) {
+          isInterior[V[n(i)]] = false;
+          isInterior[V[p(i)]] = false;
+        }
+      }
     // **03 implement it 
     }  
     
