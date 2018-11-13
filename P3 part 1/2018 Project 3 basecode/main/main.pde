@@ -136,7 +136,7 @@ void draw() {
  // **05 implement corner operators in Mesh
   if(step5) 
     {
-    // live=false;
+    live=false;
       fill(magenta); 
       if(showCorner) M.showCurrentCorner(20); 
       if (showOpposite) {

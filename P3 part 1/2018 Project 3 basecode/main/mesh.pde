@@ -139,6 +139,9 @@ class MESH {
     
   void smoothenInterior() { // even interior vertiex locations
     pt[] Gn = new pt[nv];
+    for (int i = 0; i < nc; i++) {
+      
+    }
     // **04 implement it 
     for (int v=0; v<nv; v++) if(isInterior[v]) G[v].translateTowards(.1,Gn[v]);
     }
@@ -148,8 +151,8 @@ class MESH {
   int v (int c) {return V[c];}                                // vertex of c
   int o (int c) {return O[c];}                                // opposite corner
   int l (int c) {return O[n(c)];}                             // left
-  int s (int c) {return n(O[n(c)]);}                             // left
-  int u (int c) {return p(O[p(c)]);}                             // left
+  int s (int c) {return n(O[n(c)]);}                             // swing
+  int u (int c) {return p(O[p(c)]);}                             // unswing
   int r (int c) {return O[p(c)];}                             // right
 
   void showOpposites()
@@ -157,8 +160,8 @@ class MESH {
     boolean[] visited = new boolean[nc];
     for (int i = 0; i < nc; i++) {
       if (!visited[i]) {
-        pt midPoint = P(G[v(n(i))], G[v(p(i))]);
-        drawParabolaInHat(G[v(i)], midPoint, G[v(o(i))], 5);
+        pt midPoint = P(g(n(i)), g(p(i)));
+        drawParabolaInHat(g(i), midPoint, g(o(i)), 5);
         visited[i] = true;
         visited[o(i)] = true;
       }
@@ -167,11 +170,26 @@ class MESH {
 
   void showVoronoiEdges() // draws Voronoi edges on the boundary of Voroni cells of interior vertices
     { 
+      boolean[] visited = new boolean[nv];
+      for (int i = 0; i < nc; i++) {
+        if (!visited[v(i)] && isInterior[v(i)]) {
+          visited[v(i)] = true;
+          pt c_1 = triCircumcenter(i);
+          int s = s(i);
+          while (s != i) {
+            pt c_2 = triCircumcenter(s);
+            show(c_1, c_2);
+            c_1 = c_2;
+            s = s(s);
+          }
+        }
+      }
     // **06 implement it
     }               
 
   void showArcs() // draws arcs of quadratic B-spline of Voronoi boundary loops of interior vertices
     { 
+
     // **06 implement it
     }               // draws arcs in triangles
 
