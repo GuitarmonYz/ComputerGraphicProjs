@@ -140,7 +140,7 @@ class MESH {
   void smoothenInterior() { // even interior vertiex locations
     pt[] Gn = new pt[nv];
     for (int i = 0; i < nc; i++) {
-      
+      if (isInterior())
     }
     // **04 implement it 
     for (int v=0; v<nv; v++) if(isInterior[v]) G[v].translateTowards(.1,Gn[v]);
