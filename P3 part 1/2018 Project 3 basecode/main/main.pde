@@ -136,21 +136,29 @@ void draw() {
  // **05 implement corner operators in Mesh
   if(step5) 
     {
-    live=false;
-    fill(magenta); 
-    if(showCorner) M.showCurrentCorner(20); 
+    // live=false;
+      fill(magenta); 
+      if(showCorner) M.showCurrentCorner(20); 
+      if (showOpposite) {
+        pushMatrix();
+        translate(0,0,6);
+        noFill();
+        stroke(black);
+        M.showOpposites();
+        popMatrix();        
+      }
     }
     
   if(step6)
     {
-    pushMatrix(); 
-    translate(0,0,6); noFill(); 
-    stroke(blue); 
-    if(showVoronoi) M.showVoronoiEdges(); // **06 implement it in Mesh
-    stroke(red); 
-    if(showArcs) M.showArcs(); // **06 implement it in Mesh
-    noStroke();
-    popMatrix();
+      pushMatrix(); 
+      translate(0,0,6); noFill(); 
+      stroke(blue); 
+      if(showVoronoi) M.showVoronoiEdges(); // **06 implement it in Mesh
+      stroke(red); 
+      if(showArcs) M.showArcs(); // **06 implement it in Mesh
+      noStroke();
+      popMatrix();
     }
 
   if(step7)
