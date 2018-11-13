@@ -152,6 +152,14 @@ class MESH {
   int u (int c) {return p(O[p(c)]);}                             // left
   int r (int c) {return O[p(c)];}                             // right
 
+  void showOpposites()
+  {
+    for (int i = 0; i < nc; i++) {
+      pt midPoint = P(G[v(n(i))], G[v(p(i))]);
+      drawParabolaInHat(G[v(i)], midPoint, G[v(o(i))], 5);
+    }
+  }
+
   void showVoronoiEdges() // draws Voronoi edges on the boundary of Voroni cells of interior vertices
     { 
     // **06 implement it
