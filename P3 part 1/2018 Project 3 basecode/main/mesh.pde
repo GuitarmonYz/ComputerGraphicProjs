@@ -80,6 +80,7 @@ class MESH {
                 addTriangle(i, k, j);
               }
             }
+           
          }
        }
      }
@@ -105,7 +106,9 @@ class MESH {
     
   void showBorderEdges()  // draws all border edges of mesh
     {
+      // println("border");
       for (int i = 0; i < nc; i++) {
+        // println(i, O[i]);
         if (O[i] == i){
           showEdge(i);
         }
@@ -125,22 +128,29 @@ class MESH {
     
   void classifyVertices() 
     { 
-      for (int i = 0; i < nv; i++) {
-        isInterior[i] = true;
-      }
-      for (int i = 0; i < nc; i++) {
-        if (O[i] == i) {
-          isInterior[V[n(i)]] = false;
-          isInterior[V[p(i)]] = false;
-        }
-      }
     // **03 implement it 
     }  
     
   void smoothenInterior() { // even interior vertiex locations
-    pt[] Gn = new pt[nv];
+    pt[] Gn = G;
     // **04 implement it 
-    for (int v=0; v<nv; v++) if(isInterior[v]) G[v].translateTowards(.1,Gn[v]);
+
+    for (int c = 0; c < nc; c++) {
+      if (isInterior[V[c]])
+      {
+        println(V[c]); 
+        Gn[V[c]].add(V(0.0001, V(g(V[c]), g(V[n(c)]))));
+
+      }
+    }
+
+    for (int v=0; v<nv; v++) {
+      if(isInterior[v]) 
+      {
+        G[v].translateTowards(.1,Gn[v]);
+      }
+    }
+
     }
 
 
