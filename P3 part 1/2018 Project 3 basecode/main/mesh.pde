@@ -145,12 +145,12 @@ class MESH {
 
 
    // **05 implement corner operators in Mesh
-  int v (int c) {return 0;}                                // vertex of c
-  int o (int c) {return 0;}                                // opposite corner
-  int l (int c) {return 0;}                             // left
-  int s (int c) {return 0;}                             // left
-  int u (int c) {return 0;}                             // left
-  int r (int c) {return 0;}                             // right
+  int v (int c) {return V[c];}                                // vertex of c
+  int o (int c) {return O[c];}                                // opposite corner
+  int l (int c) {return O[n(c)];}                             // left
+  int s (int c) {return n(O[n(c)]);}                             // left
+  int u (int c) {return p(O[p(c)]);}                             // left
+  int r (int c) {return O[p(c)];}                             // right
 
   void showVoronoiEdges() // draws Voronoi edges on the boundary of Voroni cells of interior vertices
     { 
