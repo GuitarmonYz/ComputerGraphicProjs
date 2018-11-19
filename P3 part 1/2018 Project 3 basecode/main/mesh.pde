@@ -98,6 +98,7 @@ class MESH {
     c=0;
     bulged_edges.clear();
     added_triangles.clear();
+    // find a starting border edge
     int init_p1 = -1;
     float min_x = Float.MAX_VALUE;
     for (int i = 0; i < nv; i++) {
@@ -112,6 +113,7 @@ class MESH {
         init_p2 = i;
       }
     }
+    // bfs bulging
     queue.add(init_p1);
     queue.add(init_p2);
     while (!queue.isEmpty()) {
@@ -136,10 +138,8 @@ class MESH {
           minBulge = bulge;
           v3 = i;
         }
-        // break;
       }
       if (v3 != -1) {
-        //visited.add(v3);
         queue.add(v1);
         queue.add(v3);
         queue.add(v2);
@@ -158,7 +158,6 @@ class MESH {
           }
         }
       }
-      // break;
     }
     
     

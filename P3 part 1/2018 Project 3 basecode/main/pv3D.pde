@@ -63,8 +63,8 @@ class edge
   }
   public boolean equals(Object o) {
       if (o instanceof edge) {
-          edge p = (edge)o;
-          return p.a == a && p.b == b;
+          edge e = (edge)o;
+          return e.a == a && e.b == b;
       }
       return false;
   }
@@ -84,9 +84,9 @@ class triangle
     this.c = c;
   }
   public boolean equals(Object o) {
-      if (o instanceof edge) {
-          edge p = (edge)o;
-          return p.a == a && p.b == b && p.c == c;
+      if (o instanceof triangle) {
+          triangle t = (triangle)o;
+          return t.a == a && t.b == b && t.c == c;
       }
       return false;
   }
