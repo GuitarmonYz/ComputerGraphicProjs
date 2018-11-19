@@ -52,6 +52,51 @@ class pt
    pt div(int f) {x/=f; y/=f; z/=f; return this;};
    pt translateTowards(float s, pt P) {x+=s*(P.x-x);  y+=s*(P.y-y); z+=s*(P.z-z);  return this;};  // transalte by ratio s towards P
    }
+
+class edge
+{
+  int a;
+  int b;
+  edge(int a, int b) {
+    this.a = a;
+    this.b = b;
+  }
+  public boolean equals(Object o) {
+      if (o instanceof edge) {
+          edge p = (edge)o;
+          return p.a == a && p.b == b;
+      }
+      return false;
+  }
+  public int hashCode() {
+    return new Integer(a).hashCode() * 31 + new Integer(b).hashCode();
+  }
+}
+
+edge E(int a, int b) {return new edge(a, b);};
+
+class triangle
+{
+  int a, b, c;
+  triangle(int a, int b, int c) {
+    this.a = a;
+    this.b = b;
+    this.c = c;
+  }
+  public boolean equals(Object o) {
+      if (o instanceof edge) {
+          edge p = (edge)o;
+          return p.a == a && p.b == b && p.c == c;
+      }
+      return false;
+  }
+  public int hashCode() {
+    return new Integer(a).hashCode() * 31 * 31 + new Integer(b).hashCode() * 31 + new Integer(c).hashCode();
+  }
+}
+
+triangle Tri(int a, int b, int c) {return new triangle(a, b, c);};
+
    
 // =====  vector functions
 vec V() {return new vec(); };                                                                          // make vector (x,y,z)

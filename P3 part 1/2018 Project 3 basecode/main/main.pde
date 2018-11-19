@@ -100,7 +100,8 @@ void draw() {
       {
       M.reset(); 
       M.loadVertices(R.G,R.nv); 
-      M.triangulate(); // **01 implement it in Mesh
+       //M.triangulate(); // **01 implement it in Mesh
+      M.triangulateWithBulging();
       }
     if(showTriangles) M.showTriangles();
     noStroke();

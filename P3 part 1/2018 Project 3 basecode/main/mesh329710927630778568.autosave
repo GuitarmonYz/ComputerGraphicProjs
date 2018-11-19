@@ -15,10 +15,6 @@ class MESH {
     int nc = 0; 
     int[] V = new int [3*maxnt];   
     int[] O = new int [3*maxnt];  
-    // additional data structure needed to bulge Triangularization
-    Set<edge> bulged_edges = new HashSet();
-    Set<triangle> added_triangles = new HashSet();
-    Queue<Integer> queue = new LinkedList();
     // current corner that can be edited with keys
   MESH() {for (int i=0; i<maxnv; i++) G[i]=new pt();};
   void reset() {nv=0; nt=0; nc=0;}                                                  // removes all vertices and triangles
@@ -96,34 +92,25 @@ class MESH {
   void triangulateWithBulging()
   {
     c=0;
-    bulged_edges.clear();
-    added_triangles.clear();
-    int init_p1 = -1;
-    float min_x = Float.MAX_VALUE;
-    for (int i = 0; i < nv; i++) {
-      if (G[i].x < min_x) {
-        init_p1 = i;
-        min_x = G[i].x;
-      }
-    }
-    int init_p2 = 0;
-    for (int i = 1; i < nv; i++) {
-      if (init_p2 != init_p1 && dot(cross(V(G[init_p1], G[i]), V(G[init_p1], G[init_p2])), V(0,0,1)) < 0) {
-        init_p2 = i;
-      }
-    }
-    queue.add(init_p1);
-    queue.add(init_p2);
+    // G[0], G[1] pick a edge to start
+    // traverse all points that not in triangle set
+    // find the point that have minimum bulge
+    // check clockwise and add to triangle
+    Set<edge> bulged_edges = new HashSet();
+    visited[5] = true;
+    visited[15] = true;
+    Queue<Integer> queue = new LinkedList();
+    queue.add(5);
+    queue.add(15);
     while (!queue.isEmpty()) {
       int v1 = queue.poll();
       int v2 = queue.poll();
-      Integer vo = queue.poll();
+      int vo = queue.poll();
       float minBulge = Float.MAX_VALUE;
       int v3 = -1;
-      if (bulged_edges.contains(E(v1, v2)) || bulged_edges.contains(E(v2, v1))) continue;
-      bulged_edges.add(E(v1, v2));
       for (int i = 0; i < nv; i++) {
-        if (vo != null && dot(cross(V(G[v1], G[v2]), V(G[v1], G[vo])), cross(V(G[v1], G[v2]), V(G[v1], G[i]))) > 0) continue;
+        // if (visited[i]) continue;
+        if (vo != null && dot(cross(V(G[v1], G[v2]), V(G[v1], G[vo])), cross(V(G[v1], G[v2]), V(G[v1], G[i]))) < 0) continue;
         pt center = CircumCenter(G[v1], G[v2], G[i]);
         float bulge = 0;
         float e = dot(V(center, G[v1]), U(V(center, P(G[v1], G[v2]))));
@@ -139,7 +126,7 @@ class MESH {
         // break;
       }
       if (v3 != -1) {
-        //visited.add(v3);
+        // visited[v3] = true;
         queue.add(v1);
         queue.add(v3);
         queue.add(v2);
@@ -147,15 +134,9 @@ class MESH {
         queue.add(v3);
         queue.add(v1);
         if (cw(V(0,0,1), V(G[v1], G[v2]), V(G[v1], G[v3]))) {
-          if (!added_triangles.contains(Tri(v1, v2, v3)) && !added_triangles.contains(Tri(v2, v3, v1)) && !added_triangles.contains(Tri(v3, v1, v2))) {
-            addTriangle(v1, v2, v3);
-            added_triangles.add(Tri(v1, v2, v3));
-          }
+          addTriangle(v1, v2, v3);
         } else {
-          if (!added_triangles.contains(Tri(v1, v3, v2)) && !added_triangles.contains(Tri(v2, v1, v3)) && !added_triangles.contains(Tri(v3, v2, v1))) {
-            addTriangle(v1, v3, v2);
-            added_triangles.add(Tri(v1, v3, v2));
-          }
+          addTriangle(v1, v3, v2);
         }
       }
       // break;
