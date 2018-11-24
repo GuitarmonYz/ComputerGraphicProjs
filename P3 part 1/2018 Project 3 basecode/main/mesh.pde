@@ -1,7 +1,9 @@
 import java.util.Queue;
+import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Arrays;
 // TRIANGLE MESH
 class MESH {
     // VERTICES
@@ -19,6 +21,12 @@ class MESH {
     Set<edge> bulged_edges = new HashSet();
     Set<triangle> added_triangles = new HashSet();
     Queue<Integer> queue = new LinkedList();
+    // Data Structures for edgebreaker
+    
+    int[] gN = new int [3*maxnt];
+    int[] gP = new int [3*maxnt];
+    boolean[] vertices_visited = new boolean[maxnv];
+    boolean[] g_visited = new boolean[3*maxnt];
     // current corner that can be edited with keys
   MESH() {for (int i=0; i<maxnv; i++) G[i]=new pt();};
   void reset() {nv=0; nt=0; nc=0;}                                                  // removes all vertices and triangles
@@ -37,6 +45,14 @@ class MESH {
   boolean bord(int c) {return(O[c]==c);};  // not a border corner
 
   pt cg(int c) {return P(0.6,g(c),0.2,g(p(c)),0.2,g(n(c)));}   // computes offset location of point at corner c
+
+  // Edgebreaker Operations
+  int gv (int c) {return v(n(c));};
+  int gn (int c) {return p(c);};
+  int gp (int c) {return n(c);};
+  int go (int c) {return p(o(n(c)));};
+  int gP (int c) {return gP[c];};
+  int gN (int c) {return gN[c];};
 
   // CORNER ACTIONS CURRENT CORNER c
   void next() {c=n(c);}
@@ -62,7 +78,7 @@ class MESH {
       }
     }                          
   void showInteriorVertices(float r) {for (int v=0; v<nv; v++) if(isInterior[v]) show(G[v],r); }                          // shows all vertices as dots
-  void showTriangles() { for (int c=0; c<nc; c+=3) show(g(c), g(c+1), g(c+2)); }         // draws all triangles (edges, or filled)
+  void showTriangles() { for (int c=0; c<nc; c+=3) show(g(c), g(c+1), g(c+2)); }         // draws all triangles (edges, or filled
   void showEdges() {for (int i=0; i<nc; i++) showEdge(i); };         // draws all edges of mesh twice
 
   void triangulate()      // performs Delaunay triangulation using a quartic algorithm
@@ -91,7 +107,6 @@ class MESH {
          }
        }
      }
-   // **01 implement it 
    }
   void triangulateWithBulging()
   {
@@ -159,8 +174,6 @@ class MESH {
         }
       }
     }
-    
-    
   }  
 
    
@@ -177,8 +190,127 @@ class MESH {
         }
         if (!found) O[i] = i;
       }
-    // **02 implement it 
     } 
+
+  void initEdgebreaker()
+  {
+    Arrays.fill(vertices_visited, false);
+    Arrays.fill(g_visited, false);
+    Arrays.fill(gN, -1);
+    Arrays.fill(gP, -1);
+    for (int i = 0; i < nc; i++) {
+      if (o(i) == i) {
+        for (int j = 0; j  < nc; j++) {
+          if (o(j) == j) {
+            if (v(n(i)) == v(p(j))) {
+              gN[p(i)] = p(j);
+              gP[p(j)] = p(i);
+              vertices_visited[v(n(i))] = true;
+              g_visited[p(i)] = true;
+            }
+          }
+        }
+      }
+    }
+  }
+
+  void labelEdgebreaker()
+  {
+    Deque<Integer> stack = new LinkedList();
+    int start = -1;
+
+    for (int i = 0; i < nc; i++) {
+      if (gN[i] != -1) {
+        start = i;
+        break;
+      } 
+    }
+    stack.offerLast(start);
+    while (!stack.isEmpty()) {
+      int cur = stack.pollLast();
+      if (!vertices_visited[gv(cur)]) {
+        //case C
+        vertices_visited[gv(cur)] = true;
+        g_visited[cur] = false;
+        g_visited[go(gp(cur))] = true;
+        g_visited[go(gn(cur))] = true;
+
+        gN[go(gn(cur))] = gN[cur];
+        gP[gN[cur]] = go(gn(cur));
+        gP[go(gp(cur))] = gP[cur];
+        gN[gP[cur]] = go(gp(cur));
+        gN[go(gp(cur))] = go(gn(cur));
+        gP[go(gn(cur))] = go(gp(cur));
+        stack.offerLast(go(gn(cur)));
+        fill(yellow);
+        println("C");
+      } else {
+        if (gp(cur) == gP(cur)) {
+          if (gn(cur) == gN(cur)) {
+            //case E
+            g_visited[cur] = false;
+            g_visited[gn(cur)] = false;
+            g_visited[gp(cur)] = false;
+            fill(red);
+            println("E");
+          } else {
+            //case L
+            g_visited[cur] = false;
+            g_visited[gP(cur)] = false;
+            g_visited[go(gn(cur))] = true;
+
+            gN[gP(gP(cur))] = go(gn(cur));
+            gP[go(gn(cur))] = gP(gP(cur));
+            gN[go(gn(cur))] = gN(cur);
+            gP[gn(cur)] = go(gn(cur));
+            stack.offerLast(go(gn(cur)));
+
+            fill(brown);
+            println("L");
+          }
+        } else {
+          if (gn(cur) == gN(cur)) {
+            // case R
+            g_visited[cur] = false;
+            g_visited[gN(cur)] = false;
+            g_visited[go(gp(cur))] = true;
+            gP[gN(gN(cur))] = go(gp(cur));
+            gN[go(gp(cur))] = gN(gN(cur));
+            gP[go(gp(cur))] = gP(cur);
+            gN[gP(cur)] = go(gp(cur));
+            stack.offerLast(go(gp(cur)));
+
+            fill(blue);
+            println("R");
+          } else {
+            // case S
+            g_visited[cur] = false;
+            g_visited[go(gp(cur))] = true;
+            g_visited[go(gn(cur))] = true;
+
+            int b = gn(cur);
+            while (!g_visited[b]) {
+              b = gp(go(b));
+            }
+            gN[gP(cur)] = go(gp(cur));
+            gP[go(gp(cur))] = gP(cur);
+            gN[go(gp(cur))] = gN(b);
+            gP[gN(b)] = go(gp(cur));
+            gN[b] = go(gn(cur));
+            gP[go(gn(cur))] = b;
+            gN[go(gn(cur))] = gN(cur);
+            gP[gN(cur)] = go(gn(cur));
+            stack.offerLast(go(gp(cur)));
+            stack.offerLast(go(gn(cur)));
+
+            fill(green);
+            println("S");
+          }
+        }
+      }
+      show(g(cur), g(p(cur)), g(n(cur)));
+    }
+  }
 
   int countBorders() {
     int count = 0;
@@ -197,7 +329,6 @@ class MESH {
           showEdge(i);
         }
       }
-    // **02 implement; 
     }         
 
   void showNonBorderEdges() // draws all non-border edges of mesh
@@ -207,7 +338,6 @@ class MESH {
           showEdge(i);
         }
       }
-    // **02 implement 
     }        
     
   void classifyVertices() 
@@ -221,7 +351,6 @@ class MESH {
           isInterior[V[p(i)]] = false;
         }
       }
-    // **03 implement it 
     }  
     
   void smoothenInterior() 
@@ -243,12 +372,9 @@ class MESH {
           Gn[i].div(count[i]);
         }
       }
-      // **04 implement it 
       for (int v=0; v<nv; v++) if(isInterior[v]) G[v].translateTowards(.1,Gn[v]);
     }
 
-
-   // **05 implement corner operators in Mesh
   int v (int c) {return V[c];}                                // vertex of c
   int o (int c) {return O[c];}                                // opposite corner
   int l (int c) {return O[n(c)];}                             // left
@@ -285,7 +411,6 @@ class MESH {
           }
         }
       }
-    // **06 implement it
     }               
 
   void showArcs() // draws arcs of quadratic B-spline of Voronoi boundary loops of interior vertices
@@ -313,7 +438,6 @@ class MESH {
           }
         }
       }
-    // **06 implement it
     }               // draws arcs in triangles
 
   void drawVoronoiFaceOfInteriorVertices() {

@@ -100,7 +100,8 @@ void draw() {
       {
       M.reset(); 
       M.loadVertices(R.G,R.nv); 
-       //M.triangulate(); // **01 implement it in Mesh
+      // M.triangulate(); // **01 implement it in Mesh
+      
       M.triangulateWithBulging();
       }
     if(showTriangles) M.showTriangles();
@@ -184,6 +185,23 @@ void draw() {
     
   if(step9)
     {
+      pushMatrix(); 
+      translate(0,0,4);
+      // if(live) 
+      //   {
+      //   M.reset(); 
+      //   M.loadVertices(R.G,R.nv); 
+      //   //M.triangulate(); // **01 implement it in Mesh
+      //   M.triangulateWithBulging();
+      //   }
+      // if(showTriangles) M.showTriangles();
+      // noFill();
+      M.initEdgebreaker();
+      M.labelEdgebreaker();
+      // M.drawTri();
+      
+      noStroke();
+      popMatrix();
     }
     
   if(step10)
