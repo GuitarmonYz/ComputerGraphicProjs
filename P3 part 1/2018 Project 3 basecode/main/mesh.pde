@@ -243,7 +243,7 @@ class MESH {
         gP[go(gn(cur))] = go(gp(cur));
         stack.offerLast(go(gn(cur)));
         fill(yellow);
-        println("C");
+        // println("C");
       } else {
         if (gp(cur) == gP(cur)) {
           if (gn(cur) == gN(cur)) {
@@ -252,7 +252,7 @@ class MESH {
             g_visited[gn(cur)] = false;
             g_visited[gp(cur)] = false;
             fill(red);
-            println("E");
+            // println("E");
           } else {
             //case L
             g_visited[cur] = false;
@@ -266,7 +266,7 @@ class MESH {
             stack.offerLast(go(gn(cur)));
 
             fill(brown);
-            println("L");
+            // println("L");
           }
         } else {
           if (gn(cur) == gN(cur)) {
@@ -281,7 +281,7 @@ class MESH {
             stack.offerLast(go(gp(cur)));
 
             fill(blue);
-            println("R");
+            // println("R");
           } else {
             // case S
             g_visited[cur] = false;
@@ -304,7 +304,7 @@ class MESH {
             stack.offerLast(go(gn(cur)));
 
             fill(green);
-            println("S");
+            // println("S");
           }
         }
       }
