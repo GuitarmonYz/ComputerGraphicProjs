@@ -3,6 +3,8 @@ import java.util.Deque;
 import java.util.LinkedList;
 import java.util.Set;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.HashMap;
 import java.util.Arrays;
 // TRIANGLE MESH
 class MESH {
@@ -22,11 +24,13 @@ class MESH {
     Set<triangle> added_triangles = new HashSet();
     Queue<Integer> queue = new LinkedList();
     // Data Structures for edgebreaker
-    
     int[] gN = new int [3*maxnt];
     int[] gP = new int [3*maxnt];
     boolean[] vertices_visited = new boolean[maxnv];
     boolean[] g_visited = new boolean[3*maxnt];
+    // Data structures for cat catching dogs
+    pt[] voronoi_vertices = new pt[maxnt];
+    Map<Integer, Set<Integer>> adjVoroTable = new HashMap();
     // current corner that can be edited with keys
   MESH() {for (int i=0; i<maxnv; i++) G[i]=new pt();};
   void reset() {nv=0; nt=0; nc=0;}                                                  // removes all vertices and triangles
@@ -176,7 +180,6 @@ class MESH {
     }
   }  
 
-   
   void computeO() // **02 implement it 
     {     
       for (int i = 0; i < nc; i++) {
@@ -398,16 +401,60 @@ class MESH {
   void showVoronoiEdges() // draws Voronoi edges on the boundary of Voroni cells of interior vertices
     { 
       boolean[] visited = new boolean[nv];
+      boolean[] visited_tri = new boolean[nt];
+      adjVoroTable.clear();
+      for (int i = 0; i < nc; i++) {
+        if (!visited_tri[t(i)] && isInterior[v(i)]) {
+          voronoi_vertices[t(i)] = triCircumcenter(i);
+          visited_tri[t(i)] = true;
+        }
+      }
+
       for (int i = 0; i < nc; i++) {
         if (!visited[v(i)] && isInterior[v(i)]) {
           visited[v(i)] = true;
-          pt c_1 = triCircumcenter(i);
+          // pt c_1 = triCircumcenter(i);
+          pt c_1 = voronoi_vertices[t(i)];
           int s = s(i);
+          int pre = i;
           while (s != i) {
-            pt c_2 = triCircumcenter(s);
+            // pt c_2 = triCircumcenter(s);
+            pt c_2 = voronoi_vertices[t(s)];
             show(c_1, c_2);
+            // filling Voronoi adjTable
+            if (adjVoroTable.get(t(pre)) != null) {
+              adjVoroTable.get(t(pre)).add(t(s));
+            } else {
+              Set<Integer> tmp_set = new HashSet();
+              tmp_set.add(t(s));
+              adjVoroTable.put(t(pre), tmp_set);
+            }
+            if (adjVoroTable.get(t(s)) != null) {
+              adjVoroTable.get(t(s)).add(t(pre));
+            } else {
+              Set<Integer> tmp_set = new HashSet();
+              tmp_set.add(t(pre));
+              adjVoroTable.put(t(s), tmp_set);
+            }
             c_1 = c_2;
+            pre = s;
             s = s(s);
+          }
+          pt c_2 = voronoi_vertices[t(i)];
+          show(c_1, c_2);
+          if (adjVoroTable.get(t(pre)) != null) {
+            adjVoroTable.get(t(pre)).add(t(s));
+          } else {
+            Set<Integer> tmp_set = new HashSet();
+            tmp_set.add(t(s));
+            adjVoroTable.put(t(pre), tmp_set);
+          }
+          if (adjVoroTable.get(t(s)) != null) {
+            adjVoroTable.get(t(s)).add(t(pre));
+          } else {
+            Set<Integer> tmp_set = new HashSet();
+            tmp_set.add(t(pre));
+            adjVoroTable.put(t(s), tmp_set);
           }
         }
       }

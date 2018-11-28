@@ -56,6 +56,12 @@ pts R, S, T;
 EdgeSet BP = new EdgeSet();  
 MESH M = new MESH();
 
+// for cat chasing dog
+int num_cat = 3;
+dog d = new dog(P(255,255,0), V(0,0,0), V(0,0,0), 0.2);
+cat[] cats = new cat[num_cat];
+
+
 void setup() {
   myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
   textureMode(NORMAL);          
@@ -65,6 +71,11 @@ void setup() {
   //P.resetOnCircle(6,100); Q.copyFrom(P); // use this to get started if no model exists on file: move points, save to file, comment this line
   P.loadPts("data/pts");  
   Q.loadPts("data/pts2"); // loads saved models from file (comment out if they do not exist yet)
+  // init cats
+  for (int i = 0; i < num_cat; i++) {
+    cats[i] = new cat(P(255,255,0), V(0,0,0), V(0,0,0), 0.2);
+  }
+  
   noSmooth();
   //frameRate(30);
   sphereDetail(12);
@@ -187,25 +198,31 @@ void draw() {
     {
       pushMatrix(); 
       translate(0,0,4);
-      // if(live) 
-      //   {
-      //   M.reset(); 
-      //   M.loadVertices(R.G,R.nv); 
-      //   //M.triangulate(); // **01 implement it in Mesh
-      //   M.triangulateWithBulging();
-      //   }
-      // if(showTriangles) M.showTriangles();
-      // noFill();
       M.initEdgebreaker();
       M.labelEdgebreaker();
-      // M.drawTri();
-      
       noStroke();
       popMatrix();
     }
     
   if(step10)
     {
+      fill(green);
+      d.initPos();
+      d.updateAcc();
+      d.projectAcc();
+      d.updateVelocity();
+      d.move();
+      show(d.getPos(), 12);
+      fill(blue);
+      for (cat c : cats) {
+        c.initPos();
+        c.updateAcc();
+        c.projectAcc();
+        c.updateVelocity();
+        c.move();
+        show(c.getPos(), 12);
+      }
+      
     }
 
   popMatrix(); // done with 3D drawing. Restore front view for writing text on canvas
