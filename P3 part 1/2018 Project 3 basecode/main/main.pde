@@ -1,3 +1,4 @@
+import java.util.concurrent.TimeUnit;
 //  ******************* 2018 Project 3 basecde ***********************
 Boolean 
   showFloor=true,
@@ -12,6 +13,7 @@ Boolean
   showOpposite=true,
   showVoronoiFaces=true,
   live=true,   // updates mesh at each frame
+  test_computation=false,
 
   step1=false,
   step2=false,
@@ -61,6 +63,12 @@ int num_cat = 3;
 dog d = new dog(P(255,255,0), V(0,0,0), V(0,0,0), 0.2);
 cat[] cats = new cat[num_cat];
 
+// for animation
+int animi_tri = 0;
+int frame_count = 0;
+
+// for computation testing
+pts test_set = new pts();
 
 void setup() {
   myFace = loadImage("data/pic.jpg");  // load image from file pic.jpg in folder data *** replace that file with your pic of your own face
@@ -71,6 +79,9 @@ void setup() {
   //P.resetOnCircle(6,100); Q.copyFrom(P); // use this to get started if no model exists on file: move points, save to file, comment this line
   P.loadPts("data/pts");  
   Q.loadPts("data/pts2"); // loads saved models from file (comment out if they do not exist yet)
+  // init compuatation test set
+  test_set.declare();
+  test_set.loadPts("data/test_1000");
   // init cats
   for (int i = 0; i < num_cat; i++) {
     cats[i] = new cat(P(255,255,0), V(0,0,0), V(0,0,0), 0.2);
@@ -102,7 +113,22 @@ void draw() {
       fill(green); R.drawColumns(rb,columnHeight);
       fill(black,100); R.showPicked(rb+5); 
       }
-    
+  
+  frame_count++;
+  if (frame_count == 15) frame_count = 0;
+
+  if (test_computation) {
+    M.reset();
+    M.loadVertices(test_set.G,  test_set.nv);
+    long startTime = System.nanoTime();
+    M.triangulateWithBulging();
+    // M.triangulate();
+    long endTime   = System.nanoTime();
+    long totalTime = endTime - startTime;
+    long runTime = TimeUnit.NANOSECONDS.toMillis(totalTime);
+    println(runTime);
+  }
+
   if(step1)
     {
     pushMatrix(); 
@@ -112,10 +138,13 @@ void draw() {
       M.reset(); 
       M.loadVertices(R.G,R.nv); 
       // M.triangulate(); // **01 implement it in Mesh
-      
       M.triangulateWithBulging();
       }
     if(showTriangles) M.showTriangles();
+    if (animating) {
+      if (frame_count%15 == 0) animi_tri = M.triangleAnimation(animi_tri);
+      else M.triangleAnimation(animi_tri);
+    }
     noStroke();
     popMatrix();
     }
@@ -222,7 +251,6 @@ void draw() {
         c.move();
         show(c.getPos(), 12);
       }
-      
     }
 
   popMatrix(); // done with 3D drawing. Restore front view for writing text on canvas

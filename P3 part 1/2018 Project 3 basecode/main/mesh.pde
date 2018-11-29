@@ -68,8 +68,6 @@ class MESH {
   void unswing() {c=u(c);} 
   void printCorner() {println("c = "+c);}
   
-  
-
   // DISPLAY
   void showCurrentCorner(float r) { if(bord(c)) fill(red); else fill(dgreen); show(cg(c),r); };   // renders corner c as small ball
   void showEdge(int c) {beam( g(p(c)),g(n(c)),rt ); };  // draws edge of t(c) opposite to corner c
@@ -179,6 +177,19 @@ class MESH {
       }
     }
   }  
+
+  int triangleAnimation(int j) {
+    for (int i = 0; i < j; i++) {
+      pt center = CircumCenter(g(i*3), g(i*3 + 1), g(i*3 + 2));
+      float radius = norm(V(g(i*3),center));
+      noFill();
+      stroke(red);
+      ellipse(center.x, center.y, 2*radius, 2*radius);
+      showEdge(i*3);showEdge(i*3 + 1); showEdge(i*3 + 2);
+    }
+    
+    return (j == nt) ? 0 : j+1;
+  }
 
   void computeO() // **02 implement it 
     {     
